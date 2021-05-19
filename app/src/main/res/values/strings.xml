@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">DicodingMovieApps</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tv_title_series">TV / SERIES</string>
+    <string name="tv_title_movies">MOVIES</string>
+    <string name="tv_try_again">Coba Lagi</string>
+    <string name="tv_date">2021</string>
+    <string name="tv_genre">Action, Adventure, Fantasy</string>
+    <string name="tv_score">60%</string>
+    <string name="title_score">User \nScore</string>
+    <string name="tv_duration">2 Season</string>
+    <string name="title_duration">Duration</string>
+    <string name="title_overview">OVERVIEW</string>
+    <string name="lorem_ipsum">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
+    <string name="title_casting">TOP CAST</string>
+    <string name="tv_artist">Johny Evans</string>
+    <string name="tv_casting_name">Paryono</string>
+</resources>
