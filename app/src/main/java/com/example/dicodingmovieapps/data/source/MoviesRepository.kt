@@ -135,6 +135,9 @@ class MoviesRepository private constructor(private val remoteDataSource: RemoteD
                         val totalCast = moviesCreditResponse.cast?.size
                         Log.d("TOTAL CAST", "$totalCast ")
                         val movieCredit = when (totalCast) {
+                            0 -> CastMoviesEntity(
+                                null
+                            )
                             1 -> {
                                 CastMoviesEntity(
                                     moviesCreditResponse.id,
@@ -186,6 +189,9 @@ class MoviesRepository private constructor(private val remoteDataSource: RemoteD
                         val totalCast = tvCreditResponse.cast?.size
                         Log.d("TOTAL CAST", "$totalCast ")
                         val tvCredit = when (totalCast) {
+                            0 -> CastMoviesEntity(
+                                null
+                            )
                             1 -> {
                                 CastMoviesEntity(
                                     tvCreditResponse.id,
