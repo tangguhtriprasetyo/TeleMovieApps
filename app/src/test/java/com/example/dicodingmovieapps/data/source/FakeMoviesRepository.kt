@@ -121,8 +121,7 @@ class FakeMoviesRepository(private val remoteDataSource: RemoteDataSource) :
                 movieId,
                 object : RemoteDataSource.LoadMovieCredits {
                     override fun onMovieCreditReceived(moviesCreditResponse: MoviesCreditResponse) {
-                        val totalCast = moviesCreditResponse.cast?.size
-                        val movieCredit = when (totalCast) {
+                        val movieCredit = when (moviesCreditResponse.cast?.size) {
                             1 -> {
                                 CastMoviesEntity(
                                     moviesCreditResponse.id,
@@ -171,8 +170,7 @@ class FakeMoviesRepository(private val remoteDataSource: RemoteDataSource) :
                 tvId,
                 object : RemoteDataSource.LoadTvCredits {
                     override fun onTvCreditReceived(tvCreditResponse: MoviesCreditResponse) {
-                        val totalCast = tvCreditResponse.cast?.size
-                        val tvCredit = when (totalCast) {
+                        val tvCredit = when (tvCreditResponse.cast?.size) {
                             1 -> {
                                 CastMoviesEntity(
                                     tvCreditResponse.id,
