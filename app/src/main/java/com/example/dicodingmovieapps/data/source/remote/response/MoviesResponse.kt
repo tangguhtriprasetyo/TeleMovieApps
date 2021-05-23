@@ -19,8 +19,9 @@ data class MoviesResponse(
 
 data class ResultsItem(
 
-    @field:SerializedName("overview")
-    val overview: String? = null,
+
+    @field:SerializedName("id")
+    val id: Int? = null,
 
     @field:SerializedName("title")
     val title: String? = null,
@@ -37,6 +38,6 @@ data class ResultsItem(
     @field:SerializedName("vote_average")
     val voteAverage: Double? = null,
 
-    @field:SerializedName("id")
-    val id: Int? = null
+    @field:SerializedName("overview")
+    val overview: String? = null
 )

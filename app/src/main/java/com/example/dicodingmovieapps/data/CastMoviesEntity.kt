@@ -1,6 +1,7 @@
 package com.example.dicodingmovieapps.data
 
 data class CastMoviesEntity(
+    var id: Int? = null,
     var imgCast1: String? = null,
     var artist1: String? = null,
     var casting1: String? = null,

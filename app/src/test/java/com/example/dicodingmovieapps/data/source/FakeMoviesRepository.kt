@@ -1,6 +1,5 @@
 package com.example.dicodingmovieapps.data.source
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.dicodingmovieapps.data.CastMoviesEntity
@@ -10,6 +9,7 @@ import com.example.dicodingmovieapps.data.source.remote.RemoteDataSource
 import com.example.dicodingmovieapps.data.source.remote.response.DetailMovieResponse
 import com.example.dicodingmovieapps.data.source.remote.response.DetailTvResponse
 import com.example.dicodingmovieapps.data.source.remote.response.MoviesCreditResponse
+import com.example.dicodingmovieapps.data.source.remote.response.ResultsItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -22,13 +22,13 @@ class FakeMoviesRepository(private val remoteDataSource: RemoteDataSource) :
         val moviesResults = MutableLiveData<List<ListMoviesEntity>>()
         CoroutineScope(IO).launch {
             remoteDataSource.getMoviesList(object : RemoteDataSource.LoadMoviesCallback {
-                override fun onAllMoviesReceived(moviesResponse: List<MoviesEntity>) {
+                override fun onAllMoviesReceived(moviesResponse: List<ResultsItem>) {
                     val moviesList = ArrayList<ListMoviesEntity>()
                     for (response in moviesResponse) {
                         val movies = ListMoviesEntity(
                             response.id!!,
                             response.title.toString(),
-                            response.posterThumbnail.toString(),
+                            response.posterPath.toString(),
                         )
                         moviesList.add(movies)
                     }
@@ -43,13 +43,13 @@ class FakeMoviesRepository(private val remoteDataSource: RemoteDataSource) :
         val tvResults = MutableLiveData<List<ListMoviesEntity>>()
         CoroutineScope(IO).launch {
             remoteDataSource.getTvList(object : RemoteDataSource.LoadMoviesCallback {
-                override fun onAllMoviesReceived(moviesResponse: List<MoviesEntity>) {
+                override fun onAllMoviesReceived(moviesResponse: List<ResultsItem>) {
                     val tvList = ArrayList<ListMoviesEntity>()
                     for (response in moviesResponse) {
                         val movies = ListMoviesEntity(
                             response.id!!,
                             response.title.toString(),
-                            response.posterThumbnail.toString(),
+                            response.posterPath.toString(),
                         )
                         tvList.add(movies)
                     }
@@ -122,10 +122,10 @@ class FakeMoviesRepository(private val remoteDataSource: RemoteDataSource) :
                 object : RemoteDataSource.LoadMovieCredits {
                     override fun onMovieCreditReceived(moviesCreditResponse: MoviesCreditResponse) {
                         val totalCast = moviesCreditResponse.cast?.size
-                        Log.d("TOTAL CAST", "$totalCast ")
                         val movieCredit = when (totalCast) {
                             1 -> {
                                 CastMoviesEntity(
+                                    moviesCreditResponse.id,
                                     moviesCreditResponse.cast?.get(0)?.profilePath,
                                     moviesCreditResponse.cast?.get(0)?.name,
                                     moviesCreditResponse.cast?.get(0)?.character
@@ -133,6 +133,7 @@ class FakeMoviesRepository(private val remoteDataSource: RemoteDataSource) :
                             }
                             2 -> {
                                 CastMoviesEntity(
+                                    moviesCreditResponse.id,
                                     moviesCreditResponse.cast?.get(0)?.profilePath,
                                     moviesCreditResponse.cast?.get(0)?.name,
                                     moviesCreditResponse.cast?.get(0)?.character,
@@ -143,6 +144,7 @@ class FakeMoviesRepository(private val remoteDataSource: RemoteDataSource) :
                             }
                             else -> {
                                 CastMoviesEntity(
+                                    moviesCreditResponse.id,
                                     moviesCreditResponse.cast?.get(0)?.profilePath,
                                     moviesCreditResponse.cast?.get(0)?.name,
                                     moviesCreditResponse.cast?.get(0)?.character,
@@ -170,10 +172,10 @@ class FakeMoviesRepository(private val remoteDataSource: RemoteDataSource) :
                 object : RemoteDataSource.LoadTvCredits {
                     override fun onTvCreditReceived(tvCreditResponse: MoviesCreditResponse) {
                         val totalCast = tvCreditResponse.cast?.size
-                        Log.d("TOTAL CAST", "$totalCast ")
                         val tvCredit = when (totalCast) {
                             1 -> {
                                 CastMoviesEntity(
+                                    tvCreditResponse.id,
                                     tvCreditResponse.cast?.get(0)?.profilePath,
                                     tvCreditResponse.cast?.get(0)?.name,
                                     tvCreditResponse.cast?.get(0)?.character
@@ -181,6 +183,7 @@ class FakeMoviesRepository(private val remoteDataSource: RemoteDataSource) :
                             }
                             2 -> {
                                 CastMoviesEntity(
+                                    tvCreditResponse.id,
                                     tvCreditResponse.cast?.get(0)?.profilePath,
                                     tvCreditResponse.cast?.get(0)?.name,
                                     tvCreditResponse.cast?.get(0)?.character,
@@ -191,6 +194,7 @@ class FakeMoviesRepository(private val remoteDataSource: RemoteDataSource) :
                             }
                             else -> {
                                 CastMoviesEntity(
+                                    tvCreditResponse.id,
                                     tvCreditResponse.cast?.get(0)?.profilePath,
                                     tvCreditResponse.cast?.get(0)?.name,
                                     tvCreditResponse.cast?.get(0)?.character,

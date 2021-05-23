@@ -137,6 +137,7 @@ class MoviesRepository private constructor(private val remoteDataSource: RemoteD
                         val movieCredit = when (totalCast) {
                             1 -> {
                                 CastMoviesEntity(
+                                    moviesCreditResponse.id,
                                     moviesCreditResponse.cast[0]?.profilePath,
                                     moviesCreditResponse.cast[0]?.name,
                                     moviesCreditResponse.cast[0]?.character
@@ -144,6 +145,7 @@ class MoviesRepository private constructor(private val remoteDataSource: RemoteD
                             }
                             2 -> {
                                 CastMoviesEntity(
+                                    moviesCreditResponse.id,
                                     moviesCreditResponse.cast[0]?.profilePath,
                                     moviesCreditResponse.cast[0]?.name,
                                     moviesCreditResponse.cast[0]?.character,
@@ -154,6 +156,7 @@ class MoviesRepository private constructor(private val remoteDataSource: RemoteD
                             }
                             else -> {
                                 CastMoviesEntity(
+                                    moviesCreditResponse.id,
                                     moviesCreditResponse.cast?.get(0)?.profilePath,
                                     moviesCreditResponse.cast?.get(0)?.name,
                                     moviesCreditResponse.cast?.get(0)?.character,
@@ -185,6 +188,7 @@ class MoviesRepository private constructor(private val remoteDataSource: RemoteD
                         val tvCredit = when (totalCast) {
                             1 -> {
                                 CastMoviesEntity(
+                                    tvCreditResponse.id,
                                     tvCreditResponse.cast[0]?.profilePath,
                                     tvCreditResponse.cast[0]?.name,
                                     tvCreditResponse.cast[0]?.character
@@ -192,6 +196,7 @@ class MoviesRepository private constructor(private val remoteDataSource: RemoteD
                             }
                             2 -> {
                                 CastMoviesEntity(
+                                    tvCreditResponse.id,
                                     tvCreditResponse.cast[0]?.profilePath,
                                     tvCreditResponse.cast[0]?.name,
                                     tvCreditResponse.cast[0]?.character,
@@ -202,6 +207,7 @@ class MoviesRepository private constructor(private val remoteDataSource: RemoteD
                             }
                             else -> {
                                 CastMoviesEntity(
+                                    tvCreditResponse.id,
                                     tvCreditResponse.cast?.get(0)?.profilePath,
                                     tvCreditResponse.cast?.get(0)?.name,
                                     tvCreditResponse.cast?.get(0)?.character,

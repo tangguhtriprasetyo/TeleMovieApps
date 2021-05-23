@@ -1,7 +1,12 @@
 package com.example.dicodingmovieapps.utils
 
 import com.example.dicodingmovieapps.data.CastMoviesEntity
+import com.example.dicodingmovieapps.data.ListMoviesEntity
 import com.example.dicodingmovieapps.data.MoviesEntity
+import com.example.dicodingmovieapps.data.source.remote.response.DetailMovieResponse
+import com.example.dicodingmovieapps.data.source.remote.response.DetailTvResponse
+import com.example.dicodingmovieapps.data.source.remote.response.MoviesCreditResponse
+import com.example.dicodingmovieapps.data.source.remote.response.ResultsItem
 
 object DummyData {
 
@@ -288,6 +293,7 @@ object DummyData {
 
         movieCredit.add(
             CastMoviesEntity(
+                2,
                 "https://www.themoviedb.org/t/p/w138_and_h175_face/eLArQ1HF3UgpCA6uRF1TQBFsMQS.jpg",
                 "Danielle Rose Russell",
                 "Hope Mikaelson",
@@ -303,4 +309,110 @@ object DummyData {
         return movieCredit
     }
 
+    fun generateListMovie(): List<ResultsItem> {
+
+        val listMovie = ArrayList<ResultsItem>()
+
+        listMovie.add(
+            ResultsItem(
+                20,
+                "The Good Doctor",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/6tfT03sGp9k4c0J3dypjrI8TSAI.jpg",
+                "https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/mZjZgY6ObiKtVuKVDrnS9VnuNlE.jpg",
+                "2017",
+                7.6,
+                "A young surgeon with Savant syndrome is recruited into the surgical unit of a prestigious hospital. The question will arise: can a person who doesn't have the ability to relate to people actually save their lives",
+            )
+        )
+
+        return listMovie
+    }
+
+    fun generateMovie(): List<ListMoviesEntity> {
+
+        val listMovie = ArrayList<ListMoviesEntity>()
+
+        listMovie.add(
+            ListMoviesEntity(
+                20,
+                "The Good Doctor",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/6tfT03sGp9k4c0J3dypjrI8TSAI.jpg"
+            )
+        )
+
+        listMovie.add(
+            ListMoviesEntity(
+                20,
+                "The Good Doctor",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/6tfT03sGp9k4c0J3dypjrI8TSAI.jpg"
+            )
+        )
+
+        listMovie.add(
+            ListMoviesEntity(
+                20,
+                "The Good Doctor",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/6tfT03sGp9k4c0J3dypjrI8TSAI.jpg"
+            )
+        )
+
+        return listMovie
+    }
+
+    fun generateDetailMovie(): List<DetailMovieResponse> {
+
+        val movies = ArrayList<DetailMovieResponse>()
+
+        movies.add(
+            DetailMovieResponse(
+                "Tom Clancy's Without Remorse",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/rEm96ib0sPiZBADNKBHKBv5bve9.jpg",
+                null,
+                1,
+                "Lorem Ipsum Dolor te Amet",
+                110,
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/rEm96ib0sPiZBADNKBHKBv5bve9.jpg",
+                "2020",
+                7.6
+
+            )
+        )
+
+        return movies
+    }
+
+    fun generateDetailTv(): List<DetailTvResponse> {
+
+        val movies = ArrayList<DetailTvResponse>()
+
+        movies.add(
+            DetailTvResponse(
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/rEm96ib0sPiZBADNKBHKBv5bve9.jpg",
+                null,
+                36,
+                2,
+                "2009",
+                "Lorem Ipsum Dolor te Amet",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/rEm96ib0sPiZBADNKBHKBv5bve9.jpg",
+                6.6,
+                "The Flash"
+            )
+        )
+
+        return movies
+    }
+
+    fun generateMovieTvCredit(): List<MoviesCreditResponse> {
+
+        val creditMovieTv = ArrayList<MoviesCreditResponse>()
+
+        creditMovieTv.add(
+            MoviesCreditResponse(
+                null,
+                2
+            )
+        )
+
+        return creditMovieTv
+    }
 }
