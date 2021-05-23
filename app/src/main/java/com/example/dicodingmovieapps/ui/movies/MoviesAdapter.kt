@@ -1,21 +1,22 @@
 package com.example.dicodingmovieapps.ui.movies
 
-import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dicodingmovieapps.data.MoviesEntity
+import com.example.dicodingmovieapps.data.ListMoviesEntity
 import com.example.dicodingmovieapps.databinding.ItemsMoviesBinding
-import com.example.dicodingmovieapps.ui.detail.DetailActivity
 import com.example.dicodingmovieapps.utils.loadImage
 
-class MoviesAdapter : RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
-    private var listMovies = ArrayList<MoviesEntity>()
+class MoviesAdapter(private val moviesClickCallback: MoviesClickCallback) :
+    RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
+    private var listMovies = ArrayList<ListMoviesEntity>()
 
-    fun setMovies(movies: List<MoviesEntity>?) {
+    fun setMovies(movies: List<ListMoviesEntity>?) {
         if (movies == null) return
         this.listMovies.clear()
         this.listMovies.addAll(movies)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesViewHolder {
@@ -31,17 +32,16 @@ class MoviesAdapter : RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
 
     override fun getItemCount(): Int = listMovies.size
 
-    class MoviesViewHolder(private val binding: ItemsMoviesBinding) :
+    inner class MoviesViewHolder(private val binding: ItemsMoviesBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(movies: MoviesEntity) {
+        fun bind(movies: ListMoviesEntity) {
             with(binding) {
                 itemView.setOnClickListener {
-                    val intent = Intent(itemView.context, DetailActivity::class.java)
-                    intent.putExtra(DetailActivity.EXTRA_MOVIES, movies)
-                    itemView.context.startActivity(intent)
+                    moviesClickCallback.onItemClicked(movies)
                 }
 
-                imgMovies.loadImage(movies.posterThumbnail)
+                imgMovies.loadImage("https://image.tmdb.org/t/p/w600_and_h900_bestv2${movies.posterPath}")
+                Log.d("POSTER", movies.posterPath)
             }
         }
 

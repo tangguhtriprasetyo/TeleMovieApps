@@ -1,19 +1,22 @@
 package com.example.dicodingmovieapps.ui.detail
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.dicodingmovieapps.data.CastMoviesEntity
 import com.example.dicodingmovieapps.data.MoviesEntity
+import com.example.dicodingmovieapps.data.source.MoviesRepository
 
-class DetailMoviesViewModel : ViewModel() {
+class DetailMoviesViewModel(private val moviesRepository: MoviesRepository) : ViewModel() {
 
-    private val detailMoviesData = MutableLiveData<MoviesEntity>()
+    fun getDetailMovies(movieId: Int): LiveData<MoviesEntity> =
+        moviesRepository.getDetailMovie(movieId)
 
-    fun setDetailMovies(data: MoviesEntity) {
-        detailMoviesData.value = data
-    }
+    fun getMovieCredit(movieId: Int): LiveData<CastMoviesEntity> =
+        moviesRepository.getMovieCredits(movieId)
 
-    fun getDetailMovies(): LiveData<MoviesEntity> {
-        return detailMoviesData
-    }
+    fun getDetailTv(tvId: Int): LiveData<MoviesEntity> =
+        moviesRepository.getDetailTv(tvId)
+
+    fun getTvCredit(tvId: Int): LiveData<CastMoviesEntity> =
+        moviesRepository.getTvCredits(tvId)
 }

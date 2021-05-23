@@ -1,5 +1,6 @@
 package com.example.dicodingmovieapps.ui.movies
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,10 +8,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.dicodingmovieapps.data.ListMoviesEntity
 import com.example.dicodingmovieapps.databinding.FragmentMoviesBinding
+import com.example.dicodingmovieapps.ui.detail.DetailActivity
+import com.example.dicodingmovieapps.viewmodel.ViewModelFactory
 
 
-class MoviesFragment : Fragment() {
+class MoviesFragment : Fragment(), MoviesClickCallback {
 
     companion object {
         private const val ARG_SECTION_NUMBER = "section_number"
@@ -39,11 +43,24 @@ class MoviesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setDataMovies()
         if (activity != null) {
-            moviesViewModel.getDataMovies().observe(viewLifecycleOwner, { moviesData ->
+            val factory = ViewModelFactory.getInstance(requireActivity())
+            moviesViewModel = ViewModelProvider(this, factory)[MoviesViewModel::class.java]
+            setDataMovies()
+        }
+
+        binding.tvErrorMessage.setOnClickListener {
+            setDataMovies()
+        }
+    }
+
+    private fun setDataMovies() {
+        showError(false)
+        showLoading(true)
+        moviesViewModel.getDataMovies((arguments?.get(ARG_SECTION_NUMBER) ?: 1) as Int)
+            ?.observe(viewLifecycleOwner, { moviesData ->
                 if (moviesData != null) {
-                    val moviesAdapter = MoviesAdapter()
+                    val moviesAdapter = MoviesAdapter(this@MoviesFragment)
                     moviesAdapter.setMovies(moviesData)
 
                     with(binding.rvMovies) {
@@ -58,19 +75,7 @@ class MoviesFragment : Fragment() {
                     showLoading(false)
                 }
             })
-        }
 
-        binding.tvErrorMessage.setOnClickListener {
-            setDataMovies()
-        }
-    }
-
-    private fun setDataMovies() {
-        showError(false)
-        showLoading(true)
-        moviesViewModel = ViewModelProvider(this).get(MoviesViewModel::class.java).apply {
-            setData(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
-        }
     }
 
     private fun showLoading(state: Boolean) {
@@ -87,5 +92,13 @@ class MoviesFragment : Fragment() {
         } else {
             binding.tvErrorMessage.visibility = View.GONE
         }
+    }
+
+    override fun onItemClicked(movies: ListMoviesEntity) {
+        val isTv = arguments?.get(ARG_SECTION_NUMBER) ?: 1 != 1
+        val intent = Intent(activity, DetailActivity::class.java)
+        intent.putExtra(DetailActivity.EXTRA_MOVIES, movies)
+        intent.putExtra(DetailActivity.EXTRA_TV, isTv)
+        startActivity(intent)
     }
 }

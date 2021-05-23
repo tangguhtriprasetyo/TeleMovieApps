@@ -4,18 +4,22 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.example.dicodingmovieapps.data.CastMoviesEntity
+import com.example.dicodingmovieapps.data.ListMoviesEntity
 import com.example.dicodingmovieapps.data.MoviesEntity
 import com.example.dicodingmovieapps.databinding.ActivityDetailBinding
 import com.example.dicodingmovieapps.utils.loadImage
+import com.example.dicodingmovieapps.viewmodel.ViewModelFactory
 
 class DetailActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_MOVIES = "extra_movies"
+        const val EXTRA_TV = "extra_tv"
     }
 
     private lateinit var binding: ActivityDetailBinding
-    private lateinit var dataMovies: MoviesEntity
+    private lateinit var dataMovies: ListMoviesEntity
     private lateinit var detailMoviesViewModel: DetailMoviesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,55 +29,95 @@ class DetailActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbarDetail)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        dataMovies = intent.getParcelableExtra<MoviesEntity>(EXTRA_MOVIES) as MoviesEntity
-        setDetailData()
-        initView()
-    }
+        val factory = ViewModelFactory.getInstance(this)
+        detailMoviesViewModel = ViewModelProvider(this, factory)[DetailMoviesViewModel::class.java]
 
-    private fun setDetailData() {
-        showError(false)
-        showLoading(true)
-        detailMoviesViewModel = ViewModelProvider(this).get(DetailMoviesViewModel::class.java).apply {
-            setDetailMovies(dataMovies)
-        }
-    }
-
-    private fun initView() {
-        detailMoviesViewModel.getDetailMovies().observe(this, {detailMovies ->
-            if (detailMovies != null) {
-                val score = "${detailMovies.userScore} %"
-
-                with(binding) {
-                    collapseToolbar.title = detailMovies.title
-                    tvReleaseDate.text = detailMovies.releaseDate
-                    tvGenre.text = detailMovies.genre
-                    icScore.progress = detailMovies.userScore
-                    tvScore.text = score
-                    tvDuration.text = detailMovies.duration
-                    tvOverview.text = detailMovies.overview
-                    tvArtist1.text = detailMovies.artist1
-                    tvCast1.text = detailMovies.casting1
-                    tvArtist2.text = detailMovies.artist2
-                    tvCast2.text = detailMovies.casting2
-                    tvArtist3.text = detailMovies.artist3
-                    tvCast3.text = detailMovies.casting3
-
-                    imgHeaderDetail.loadImage(detailMovies.posterHeader)
-                    imgCast1.loadImage(detailMovies.imgCast1)
-                    imgCast2.loadImage(detailMovies.imgCast2)
-                    imgCast3.loadImage(detailMovies.imgCast3)
-                }
-                showLoading(false)
-                showError(false)
-            } else {
-                showError(true)
-                showLoading(false)
-            }
-        })
+        dataMovies = intent.getParcelableExtra<ListMoviesEntity>(EXTRA_MOVIES) as ListMoviesEntity
+        getDetailData()
 
         binding.tvErrorMessage.setOnClickListener {
-            setDetailData()
+            getDetailData()
         }
+    }
+
+    private fun getDetailData() {
+        showError(false)
+        showLoading(true)
+        if (intent.getBooleanExtra(EXTRA_TV, false)) {
+
+            detailMoviesViewModel.getDetailTv(dataMovies.id).observe(this, { detailData ->
+                if (detailData != null) {
+                    initDetailData(detailData)
+                } else {
+                    showError(true)
+                    showLoading(false)
+                }
+            })
+
+            detailMoviesViewModel.getTvCredit(dataMovies.id).observe(this, { tvCredit ->
+                if (tvCredit != null) {
+                    initCreditInfo(tvCredit)
+                } else {
+                    showError(true)
+                    showLoading(false)
+                }
+            })
+
+        } else {
+
+            detailMoviesViewModel.getDetailMovies(dataMovies.id).observe(this, { detailData ->
+                if (detailData != null) {
+                    initDetailData(detailData)
+                } else {
+                    showError(true)
+                    showLoading(false)
+                }
+            })
+
+            detailMoviesViewModel.getMovieCredit(dataMovies.id).observe(this, { movieCredit ->
+                if (movieCredit != null) {
+                    initCreditInfo(movieCredit)
+                } else {
+                    showError(true)
+                    showLoading(false)
+                }
+            })
+        }
+    }
+
+    private fun initDetailData(moviesEntity: MoviesEntity) {
+        val score = "${moviesEntity.userScore} %"
+
+        with(binding) {
+
+            collapseToolbar.title = moviesEntity.title
+            tvReleaseDate.text = moviesEntity.releaseDate
+            tvGenre.text = moviesEntity.genre
+            icScore.progress = moviesEntity.userScore
+            tvScore.text = score
+            tvDuration.text = moviesEntity.duration
+            tvOverview.text = moviesEntity.overview
+
+            imgHeaderDetail.loadImage("https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/${moviesEntity.posterHeader}")
+        }
+    }
+
+    private fun initCreditInfo(movieCredit: CastMoviesEntity) {
+        with(binding) {
+
+            tvArtist1.text = movieCredit.artist1
+            tvCast1.text = movieCredit.casting1
+            tvArtist2.text = movieCredit.artist2
+            tvCast2.text = movieCredit.casting2
+            tvArtist3.text = movieCredit.artist3
+            tvCast3.text = movieCredit.casting3
+
+            imgCast1.loadImage("https://www.themoviedb.org/t/p/w138_and_h175_face${movieCredit.imgCast1}")
+            imgCast2.loadImage("https://www.themoviedb.org/t/p/w138_and_h175_face${movieCredit.imgCast2}")
+            imgCast3.loadImage("https://www.themoviedb.org/t/p/w138_and_h175_face${movieCredit.imgCast3}")
+        }
+        showError(false)
+        showLoading(false)
     }
 
     private fun showLoading(state: Boolean) {

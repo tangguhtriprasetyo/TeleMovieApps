@@ -1,24 +1,17 @@
 package com.example.dicodingmovieapps.ui.movies
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.dicodingmovieapps.data.MoviesEntity
-import com.example.dicodingmovieapps.utils.DummyData
+import com.example.dicodingmovieapps.data.ListMoviesEntity
+import com.example.dicodingmovieapps.data.source.MoviesRepository
 
-class MoviesViewModel : ViewModel() {
+class MoviesViewModel(private val moviesRepository: MoviesRepository) : ViewModel() {
 
-    private val moviesData = MutableLiveData<List<MoviesEntity>>()
-
-    fun setData(index: Int) {
-        if (index == 1) {
-            moviesData.value = DummyData.generateDataMovies()
-        } else if (index == 2) {
-            moviesData.value = DummyData.generateDataTvSeries()
+    fun getDataMovies(index: Int): LiveData<List<ListMoviesEntity>>? {
+        return when (index) {
+            1 -> moviesRepository.getListMovies()
+            2 -> moviesRepository.getListTv()
+            else -> null
         }
-    }
-
-    fun getDataMovies(): LiveData<List<MoviesEntity>> {
-        return moviesData
     }
 }
