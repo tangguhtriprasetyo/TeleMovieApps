@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.dicodingmovieapps.data.source.MoviesRepository
 import com.example.dicodingmovieapps.di.Injection
 import com.example.dicodingmovieapps.ui.detail.DetailMoviesViewModel
-import com.example.dicodingmovieapps.ui.movies.MoviesViewModel
+import com.example.dicodingmovieapps.ui.home.movies.MoviesViewModel
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory private constructor(private val mMoviesRepository: MoviesRepository) :

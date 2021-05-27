@@ -1,4 +1,4 @@
-package com.example.dicodingmovieapps.ui.movies
+package com.example.dicodingmovieapps.ui.home.movies
 
 import android.content.Intent
 import android.os.Bundle
@@ -28,7 +28,6 @@ class MoviesFragment : Fragment(), MoviesClickCallback {
             }
         }
     }
-
     private lateinit var moviesViewModel: MoviesViewModel
     private lateinit var binding: FragmentMoviesBinding
 

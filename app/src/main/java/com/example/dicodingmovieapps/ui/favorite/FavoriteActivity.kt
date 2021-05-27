@@ -1,4 +1,4 @@
-package com.example.dicodingmovieapps.ui.home
+package com.example.dicodingmovieapps.ui.favorite
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,27 +8,27 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.example.dicodingmovieapps.R
-import com.example.dicodingmovieapps.databinding.ActivityHomeBinding
-import com.example.dicodingmovieapps.ui.favorite.FavoriteActivity
+import com.example.dicodingmovieapps.databinding.ActivityFavoriteBinding
+import com.example.dicodingmovieapps.ui.home.HomeActivity
+import com.example.dicodingmovieapps.ui.home.SectionsPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
-class HomeActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityHomeBinding
+class FavoriteActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityFavoriteBinding
     private var doubleBackToExit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityHomeBinding.inflate(layoutInflater)
+        binding = ActivityFavoriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.bottomNav.selectedItemId = R.id.home
+        binding.bottomNavFavorite.selectedItemId = R.id.favorite
 
         val sectionsPagerAdapter = SectionsPagerAdapter(this)
-        val viewPager: ViewPager2 = binding.viewPager
+        val viewPager: ViewPager2 = binding.viewPagerFavorite
         viewPager.adapter = sectionsPagerAdapter
-        val tabs: TabLayout = binding.tabs
+        val tabs: TabLayout = binding.tabsFavorite
 
         TabLayoutMediator(tabs, viewPager) { tab, position ->
             when (position) {
@@ -37,23 +37,23 @@ class HomeActivity : AppCompatActivity() {
             }
         }.attach()
 
-        binding.bottomNav.setOnNavigationItemSelectedListener {
+        binding.bottomNavFavorite.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.home -> {
-                    setActivity(false)
+                    setActivity(true)
                 }
                 R.id.favorite -> {
-                    setActivity(true)
+                    setActivity(false)
                 }
             }
             true
         }
     }
 
-    private fun setActivity(isFavorite: Boolean) {
-        if (isFavorite) {
-            val intentFavorite = Intent(this@HomeActivity, FavoriteActivity::class.java)
-            startActivity(intentFavorite)
+    private fun setActivity(isHome: Boolean) {
+        if (isHome) {
+            val intentHome = Intent(this@FavoriteActivity, HomeActivity::class.java)
+            startActivity(intentHome)
             overridePendingTransition(0, 0)
             finish()
         }

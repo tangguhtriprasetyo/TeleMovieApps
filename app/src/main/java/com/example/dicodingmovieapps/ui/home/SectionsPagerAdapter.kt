@@ -3,7 +3,7 @@ package com.example.dicodingmovieapps.ui.home
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.dicodingmovieapps.ui.movies.MoviesFragment
+import com.example.dicodingmovieapps.ui.home.movies.MoviesFragment
 
 class SectionsPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
 

@@ -1,4 +1,4 @@
-package com.example.dicodingmovieapps.ui.movies
+package com.example.dicodingmovieapps.ui.home.movies
 
 import android.util.Log
 import android.view.LayoutInflater

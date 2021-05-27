@@ -1,4 +1,4 @@
-package com.example.dicodingmovieapps.ui.movies
+package com.example.dicodingmovieapps.ui.home.movies
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

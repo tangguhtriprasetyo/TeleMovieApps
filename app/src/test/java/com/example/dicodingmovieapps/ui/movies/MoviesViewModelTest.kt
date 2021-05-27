@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.example.dicodingmovieapps.data.ListMoviesEntity
 import com.example.dicodingmovieapps.data.source.MoviesRepository
+import com.example.dicodingmovieapps.ui.home.movies.MoviesViewModel
 import com.example.dicodingmovieapps.utils.DummyData
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals

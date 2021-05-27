@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.example.dicodingmovieapps.R
 import com.example.dicodingmovieapps.data.CastMoviesEntity
 import com.example.dicodingmovieapps.data.ListMoviesEntity
 import com.example.dicodingmovieapps.data.MoviesEntity
@@ -21,6 +22,7 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
     private lateinit var dataMovies: ListMoviesEntity
     private lateinit var detailMoviesViewModel: DetailMoviesViewModel
+    private var isFavorite = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,9 +37,22 @@ class DetailActivity : AppCompatActivity() {
         dataMovies = intent.getParcelableExtra<ListMoviesEntity>(EXTRA_MOVIES) as ListMoviesEntity
         getDetailData()
 
+        binding.addFavorite.setOnClickListener {
+            setFavorite()
+        }
+
         binding.tvErrorMessage.setOnClickListener {
             getDetailData()
         }
+    }
+
+    private fun setFavorite() {
+        if (isFavorite) {
+            binding.addFavorite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+        } else {
+            binding.addFavorite.setImageResource(R.drawable.ic_baseline_favorite_24)
+        }
+        isFavorite = !isFavorite
     }
 
     private fun getDetailData() {

@@ -1,7 +1,7 @@
-package com.example.dicodingmovieapps.ui.movies
+package com.example.dicodingmovieapps.ui.favorite.favoritemovies
 
 import com.example.dicodingmovieapps.data.ListMoviesEntity
 
-interface MoviesClickCallback {
+interface FavoriteMoviesClickCallback {
     fun onItemClicked(movies: ListMoviesEntity)
 }

@@ -59,6 +59,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit2Version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit2Version"
     implementation "com.squareup.okhttp3:logging-interceptor:$logInterceptorVersion"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     //testing
     testImplementation "junit:junit:$junitVersion"

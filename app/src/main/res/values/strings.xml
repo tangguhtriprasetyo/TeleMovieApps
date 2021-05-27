@@ -2,7 +2,7 @@
     <string name="app_name">DicodingMovieApps</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
-    <string name="tv_title_series">TV / SERIES</string>
+    <string name="tv_title_series">TV SHOW</string>
     <string name="tv_title_movies">MOVIES</string>
     <string name="tv_try_again">Coba Lagi</string>
     <string name="tv_date">2021</string>
@@ -16,4 +16,8 @@
     <string name="title_casting">TOP CAST</string>
     <string name="tv_artist">Johny Evans</string>
     <string name="tv_casting_name">Paryono</string>
+    <string name="title_favorites">Favorites</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_home">Home</string>
 </resources>
