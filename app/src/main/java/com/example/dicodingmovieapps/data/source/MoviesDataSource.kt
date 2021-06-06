@@ -1,21 +1,19 @@
 package com.example.dicodingmovieapps.data.source
 
 import androidx.lifecycle.LiveData
-import com.example.dicodingmovieapps.data.CastMoviesEntity
-import com.example.dicodingmovieapps.data.ListMoviesEntity
-import com.example.dicodingmovieapps.data.MoviesEntity
+import androidx.paging.PagedList
+import com.example.dicodingmovieapps.data.source.local.entity.CastMoviesEntity
+import com.example.dicodingmovieapps.data.source.local.entity.MoviesEntity
+import com.example.dicodingmovieapps.data.source.local.entity.MoviesWithDetail
+import com.example.dicodingmovieapps.vo.Resource
 
 interface MoviesDataSource {
 
-    fun getListMovies(): LiveData<List<ListMoviesEntity>>
+    fun getListMovies(): LiveData<Resource<PagedList<MoviesEntity>>>
 
-    fun getListTv(): LiveData<List<ListMoviesEntity>>
+    fun getMovieWithDetail(movieId: Int): LiveData<Resource<MoviesWithDetail>>
 
-    fun getDetailMovie(movieId: Int): LiveData<MoviesEntity>
+    fun getCastMovie(movieId: Int): LiveData<Resource<CastMoviesEntity>>
 
-    fun getDetailTv(tvId: Int): LiveData<MoviesEntity>
-
-    fun getMovieCredits(movieId: Int): LiveData<CastMoviesEntity>
-
-    fun getTvCredits(tvId: Int): LiveData<CastMoviesEntity>
+    fun setFavoriteMovies(movie: MoviesEntity, state: Boolean)
 }

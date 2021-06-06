@@ -3,8 +3,8 @@ package com.example.dicodingmovieapps.ui.movies
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.example.dicodingmovieapps.data.ListMoviesEntity
 import com.example.dicodingmovieapps.data.source.MoviesRepository
+import com.example.dicodingmovieapps.data.source.local.entity.MoviesEntity
 import com.example.dicodingmovieapps.ui.home.movies.MoviesViewModel
 import com.example.dicodingmovieapps.utils.DummyData
 import com.nhaarman.mockitokotlin2.verify
@@ -29,7 +29,7 @@ class MoviesViewModelTest {
     private lateinit var moviesRepository: MoviesRepository
 
     @Mock
-    private lateinit var observer: Observer<List<ListMoviesEntity>>
+    private lateinit var observer: Observer<List<MoviesEntity>>
 
     @Before
     fun setUp() {
@@ -38,8 +38,8 @@ class MoviesViewModelTest {
 
     @Test
     fun getListMovies() {
-        val dummyMovies = DummyData.generateMovie()
-        val movies = MutableLiveData<List<ListMoviesEntity>>()
+        val dummyMovies = DummyData.generateDataMovies()
+        val movies = MutableLiveData<List<MoviesEntity>>()
         movies.value = dummyMovies
 
         `when`(moviesRepository.getListMovies()).thenReturn(movies)
@@ -47,9 +47,9 @@ class MoviesViewModelTest {
         verify(moviesRepository).getListMovies()
 
         assertNotNull(moviesEntities)
-        assertEquals(3, moviesEntities?.size)
+        assertEquals(10, moviesEntities?.size)
         assertEquals(dummyMovies[0].title, moviesEntities?.get(0)?.title)
-        assertEquals(dummyMovies[0].posterPath, moviesEntities?.get(0)?.posterPath)
+        assertEquals(dummyMovies[0].posterThumbnail, moviesEntities?.get(0)?.posterThumbnail)
 
         viewModel.getDataMovies(1)?.observeForever(observer)
         verify(observer).onChanged(dummyMovies)
@@ -57,8 +57,8 @@ class MoviesViewModelTest {
 
     @Test
     fun getListTv() {
-        val dummyTvSeries = DummyData.generateMovie()
-        val tvSeries = MutableLiveData<List<ListMoviesEntity>>()
+        val dummyTvSeries = DummyData.generateDataTvSeries()
+        val tvSeries = MutableLiveData<List<MoviesEntity>>()
         tvSeries.value = dummyTvSeries
 
         `when`(moviesRepository.getListTv()).thenReturn(tvSeries)
@@ -66,9 +66,9 @@ class MoviesViewModelTest {
         verify(moviesRepository).getListTv()
 
         assertNotNull(tvEntities)
-        assertEquals(3, tvEntities?.size)
+        assertEquals(10, tvEntities?.size)
         assertEquals(dummyTvSeries[0].title, tvEntities?.get(0)?.title)
-        assertEquals(dummyTvSeries[0].posterPath, tvEntities?.get(0)?.posterPath)
+        assertEquals(dummyTvSeries[0].posterThumbnail, tvEntities?.get(0)?.posterThumbnail)
 
         viewModel.getDataMovies(2)?.observeForever(observer)
         verify(observer).onChanged(dummyTvSeries)

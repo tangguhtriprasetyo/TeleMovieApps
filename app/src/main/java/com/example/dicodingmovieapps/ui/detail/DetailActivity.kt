@@ -1,16 +1,18 @@
 package com.example.dicodingmovieapps.ui.detail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.dicodingmovieapps.R
-import com.example.dicodingmovieapps.data.CastMoviesEntity
-import com.example.dicodingmovieapps.data.ListMoviesEntity
-import com.example.dicodingmovieapps.data.MoviesEntity
+import com.example.dicodingmovieapps.data.source.local.entity.CastMoviesEntity
+import com.example.dicodingmovieapps.data.source.local.entity.MoviesEntity
+import com.example.dicodingmovieapps.data.source.local.entity.MoviesWithDetail
 import com.example.dicodingmovieapps.databinding.ActivityDetailBinding
 import com.example.dicodingmovieapps.utils.loadImage
 import com.example.dicodingmovieapps.viewmodel.ViewModelFactory
+import com.example.dicodingmovieapps.vo.Status
 
 class DetailActivity : AppCompatActivity() {
 
@@ -20,7 +22,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivityDetailBinding
-    private lateinit var dataMovies: ListMoviesEntity
+    private lateinit var dataMovies: MoviesEntity
     private lateinit var detailMoviesViewModel: DetailMoviesViewModel
     private var isFavorite = false
 
@@ -34,7 +36,7 @@ class DetailActivity : AppCompatActivity() {
         val factory = ViewModelFactory.getInstance(this)
         detailMoviesViewModel = ViewModelProvider(this, factory)[DetailMoviesViewModel::class.java]
 
-        dataMovies = intent.getParcelableExtra<ListMoviesEntity>(EXTRA_MOVIES) as ListMoviesEntity
+        dataMovies = intent.getParcelableExtra<MoviesEntity>(EXTRA_MOVIES) as MoviesEntity
         getDetailData()
 
         binding.addFavorite.setOnClickListener {
@@ -56,64 +58,84 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun getDetailData() {
-        showError(false)
-        showLoading(true)
         if (intent.getBooleanExtra(EXTRA_TV, false)) {
 
-            detailMoviesViewModel.getDetailTv(dataMovies.id).observe(this, { detailData ->
-                if (detailData != null) {
-                    initDetailData(detailData)
-                } else {
-                    showError(true)
-                    showLoading(false)
-                }
-            })
-
-            detailMoviesViewModel.getTvCredit(dataMovies.id).observe(this, { tvCredit ->
-                if (tvCredit != null) {
-                    initCreditInfo(tvCredit)
-                } else {
-                    showError(true)
-                    showLoading(false)
-                }
-            })
+//            detailMoviesViewModel.getDetailTv(dataMovies.id!!).observe(this, { detailData ->
+//                if (detailData != null) {
+//                    initDetailData(detailData)
+//                } else {
+//                    showError(true)
+//                    showLoading(false)
+//                }
+//            })
+//
+//            detailMoviesViewModel.getTvCredit(dataMovies.id!!).observe(this, { tvCredit ->
+//                if (tvCredit != null) {
+//                    initCreditInfo(tvCredit)
+//                } else {
+//                    showError(true)
+//                    showLoading(false)
+//                }
+//            })
 
         } else {
 
-            detailMoviesViewModel.getDetailMovies(dataMovies.id).observe(this, { detailData ->
+            Log.d("movieId: ", dataMovies.movieId.toString())
+            detailMoviesViewModel.setSelectedMovies(dataMovies.movieId)
+            detailMoviesViewModel.getDetailMovies().observe(this, { detailData ->
                 if (detailData != null) {
-                    initDetailData(detailData)
-                } else {
-                    showError(true)
-                    showLoading(false)
+                    when (detailData.status) {
+                        Status.LOADING -> {
+                            showError(false)
+                            showLoading(true)
+                        }
+                        Status.SUCCESS -> if (detailData.data != null) {
+                            showLoading(false)
+                            initDetailData(detailData.data)
+                        }
+                        Status.ERROR -> {
+                            showError(true)
+                            showLoading(false)
+                        }
+                    }
                 }
             })
 
-            detailMoviesViewModel.getMovieCredit(dataMovies.id).observe(this, { movieCredit ->
+            detailMoviesViewModel.getMovieCredit(dataMovies.movieId).observe(this, { movieCredit ->
                 if (movieCredit != null) {
-                    initCreditInfo(movieCredit)
-                } else {
-                    showError(true)
-                    showLoading(false)
+                    when (movieCredit.status) {
+                        Status.LOADING -> {
+                            showError(false)
+                            showLoading(true)
+                        }
+                        Status.SUCCESS -> if (movieCredit.data != null) {
+                            showLoading(false)
+                            initCreditInfo(movieCredit.data)
+                        }
+                        Status.ERROR -> {
+                            showError(true)
+                            showLoading(false)
+                        }
+                    }
                 }
             })
         }
     }
 
-    private fun initDetailData(moviesEntity: MoviesEntity) {
-        val score = "${moviesEntity.userScore} %"
+    private fun initDetailData(moviesEntity: MoviesWithDetail) {
+        val score = "${moviesEntity.mDetailMovie?.userScore} %"
 
         with(binding) {
 
-            collapseToolbar.title = moviesEntity.title
-            tvReleaseDate.text = moviesEntity.releaseDate
-            tvGenre.text = moviesEntity.genre
-            icScore.progress = moviesEntity.userScore
+            collapseToolbar.title = moviesEntity.mMovies.title
+            tvReleaseDate.text = moviesEntity.mDetailMovie?.releaseDate ?: "2020"
+            tvGenre.text = moviesEntity.mDetailMovie?.genre ?: "Horror"
+            icScore.progress = moviesEntity.mDetailMovie?.userScore ?: 0
             tvScore.text = score
-            tvDuration.text = moviesEntity.duration
-            tvOverview.text = moviesEntity.overview
+            tvDuration.text = moviesEntity.mDetailMovie?.duration ?: "0 m"
+            tvOverview.text = moviesEntity.mDetailMovie?.overview ?: "-"
 
-            imgHeaderDetail.loadImage("https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/${moviesEntity.posterHeader}")
+            imgHeaderDetail.loadImage("https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/${moviesEntity.mDetailMovie?.posterHeader}")
         }
     }
 

@@ -2,9 +2,8 @@ package com.example.dicodingmovieapps.data.source
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.dicodingmovieapps.data.CastMoviesEntity
-import com.example.dicodingmovieapps.data.ListMoviesEntity
-import com.example.dicodingmovieapps.data.MoviesEntity
+import com.example.dicodingmovieapps.data.source.local.entity.CastMoviesEntity
+import com.example.dicodingmovieapps.data.source.local.entity.MoviesEntity
 import com.example.dicodingmovieapps.data.source.remote.RemoteDataSource
 import com.example.dicodingmovieapps.data.source.remote.response.DetailMovieResponse
 import com.example.dicodingmovieapps.data.source.remote.response.DetailTvResponse
@@ -18,17 +17,23 @@ import kotlinx.coroutines.launch
 class FakeMoviesRepository(private val remoteDataSource: RemoteDataSource) :
     MoviesDataSource {
 
-    override fun getListMovies(): LiveData<List<ListMoviesEntity>> {
-        val moviesResults = MutableLiveData<List<ListMoviesEntity>>()
+    override fun getListMovies(): LiveData<List<MoviesEntity>> {
+        val moviesResults = MutableLiveData<List<MoviesEntity>>()
         CoroutineScope(IO).launch {
             remoteDataSource.getMoviesList(object : RemoteDataSource.LoadMoviesCallback {
                 override fun onAllMoviesReceived(moviesResponse: List<ResultsItem>) {
-                    val moviesList = ArrayList<ListMoviesEntity>()
+                    val moviesList = ArrayList<MoviesEntity>()
                     for (response in moviesResponse) {
-                        val movies = ListMoviesEntity(
-                            response.id!!,
-                            response.title.toString(),
-                            response.posterPath.toString(),
+                        val movies = MoviesEntity(
+                            id = response.id!!,
+                            title = response.title.toString(),
+                            posterThumbnail = response.posterPath.toString(),
+                            null,
+                            null,
+                            null,
+                            0,
+                            null,
+                            null
                         )
                         moviesList.add(movies)
                     }
@@ -39,17 +44,23 @@ class FakeMoviesRepository(private val remoteDataSource: RemoteDataSource) :
         return moviesResults
     }
 
-    override fun getListTv(): LiveData<List<ListMoviesEntity>> {
-        val tvResults = MutableLiveData<List<ListMoviesEntity>>()
+    override fun getListTv(): LiveData<List<MoviesEntity>> {
+        val tvResults = MutableLiveData<List<MoviesEntity>>()
         CoroutineScope(IO).launch {
             remoteDataSource.getTvList(object : RemoteDataSource.LoadMoviesCallback {
                 override fun onAllMoviesReceived(moviesResponse: List<ResultsItem>) {
-                    val tvList = ArrayList<ListMoviesEntity>()
+                    val tvList = ArrayList<MoviesEntity>()
                     for (response in moviesResponse) {
-                        val movies = ListMoviesEntity(
-                            response.id!!,
-                            response.title.toString(),
-                            response.posterPath.toString(),
+                        val movies = MoviesEntity(
+                            id = response.id!!,
+                            title = response.title.toString(),
+                            posterThumbnail = response.posterPath.toString(),
+                            null,
+                            null,
+                            null,
+                            0,
+                            null,
+                            null
                         )
                         tvList.add(movies)
                     }

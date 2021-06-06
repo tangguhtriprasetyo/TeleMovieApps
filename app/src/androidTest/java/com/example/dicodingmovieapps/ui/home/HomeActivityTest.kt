@@ -53,7 +53,7 @@ class HomeActivityTest {
     fun loadDetailMoviesAndTvSeries() {
         onView(withId(R.id.rv_movies)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                0,
+                2,
                 click()
             )
         )

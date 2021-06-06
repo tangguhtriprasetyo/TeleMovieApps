@@ -8,10 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.dicodingmovieapps.data.ListMoviesEntity
+import com.example.dicodingmovieapps.data.source.local.entity.MoviesEntity
 import com.example.dicodingmovieapps.databinding.FragmentMoviesBinding
 import com.example.dicodingmovieapps.ui.detail.DetailActivity
 import com.example.dicodingmovieapps.viewmodel.ViewModelFactory
+import com.example.dicodingmovieapps.vo.Status
 
 
 class MoviesFragment : Fragment(), MoviesClickCallback {
@@ -54,26 +55,31 @@ class MoviesFragment : Fragment(), MoviesClickCallback {
     }
 
     private fun setDataMovies() {
-        showError(false)
-        showLoading(true)
+        val moviesAdapter = MoviesAdapter(this@MoviesFragment)
         moviesViewModel.getDataMovies((arguments?.get(ARG_SECTION_NUMBER) ?: 1) as Int)
             ?.observe(viewLifecycleOwner, { moviesData ->
                 if (moviesData != null) {
-                    val moviesAdapter = MoviesAdapter(this@MoviesFragment)
-                    moviesAdapter.setMovies(moviesData)
-
-                    with(binding.rvMovies) {
-                        layoutManager = GridLayoutManager(context, 2)
-                        setHasFixedSize(true)
-                        adapter = moviesAdapter
+                    when (moviesData.status) {
+                        Status.LOADING -> {
+                            showLoading(true)
+                            showError(false)
+                        }
+                        Status.SUCCESS -> {
+                            showLoading(false)
+                            moviesAdapter.submitList(moviesData.data)
+                        }
+                        Status.ERROR -> {
+                            showError(true)
+                            showLoading(false)
+                        }
                     }
-                    showLoading(false)
-                    showError(false)
-                } else {
-                    showError(true)
-                    showLoading(false)
                 }
             })
+        with(binding.rvMovies) {
+            layoutManager = GridLayoutManager(context, 2)
+            setHasFixedSize(true)
+            adapter = moviesAdapter
+        }
 
     }
 
@@ -93,7 +99,7 @@ class MoviesFragment : Fragment(), MoviesClickCallback {
         }
     }
 
-    override fun onItemClicked(movies: ListMoviesEntity) {
+    override fun onItemClicked(movies: MoviesEntity) {
         val isTv = arguments?.get(ARG_SECTION_NUMBER) ?: 1 != 1
         val intent = Intent(activity, DetailActivity::class.java)
         intent.putExtra(DetailActivity.EXTRA_MOVIES, movies)

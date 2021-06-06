@@ -1,22 +1,26 @@
 package com.example.dicodingmovieapps.ui.detail
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.example.dicodingmovieapps.data.CastMoviesEntity
-import com.example.dicodingmovieapps.data.MoviesEntity
 import com.example.dicodingmovieapps.data.source.MoviesRepository
+import com.example.dicodingmovieapps.data.source.local.entity.CastMoviesEntity
+import com.example.dicodingmovieapps.data.source.local.entity.MoviesWithDetail
+import com.example.dicodingmovieapps.vo.Resource
 
 class DetailMoviesViewModel(private val moviesRepository: MoviesRepository) : ViewModel() {
+    val moviesId = MutableLiveData<Int>()
 
-    fun getDetailMovies(movieId: Int): LiveData<MoviesEntity> =
-        moviesRepository.getDetailMovie(movieId)
+    fun setSelectedMovies(movieId: Int) {
+        this.moviesId.value = movieId
+    }
 
-    fun getMovieCredit(movieId: Int): LiveData<CastMoviesEntity> =
-        moviesRepository.getMovieCredits(movieId)
+    fun getDetailMovies(): LiveData<Resource<MoviesWithDetail>> =
+        Transformations.switchMap(moviesId) { mMoviesId ->
+            moviesRepository.getMovieWithDetail(mMoviesId)
+        }
 
-    fun getDetailTv(tvId: Int): LiveData<MoviesEntity> =
-        moviesRepository.getDetailTv(tvId)
-
-    fun getTvCredit(tvId: Int): LiveData<CastMoviesEntity> =
-        moviesRepository.getTvCredits(tvId)
+    fun getMovieCredit(movieId: Int): LiveData<Resource<CastMoviesEntity>> =
+        moviesRepository.getCastMovie(movieId)
 }

@@ -3,9 +3,9 @@ package com.example.dicodingmovieapps.ui.detail
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.example.dicodingmovieapps.data.CastMoviesEntity
-import com.example.dicodingmovieapps.data.MoviesEntity
 import com.example.dicodingmovieapps.data.source.MoviesRepository
+import com.example.dicodingmovieapps.data.source.local.entity.CastMoviesEntity
+import com.example.dicodingmovieapps.data.source.local.entity.MoviesEntity
 import com.example.dicodingmovieapps.utils.DummyData
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
