@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.dicodingmovieapps.data.source.MoviesRepository
 import com.example.dicodingmovieapps.di.Injection
 import com.example.dicodingmovieapps.ui.detail.DetailMoviesViewModel
+import com.example.dicodingmovieapps.ui.favorite.favoritemovies.FavoriteMoviesViewModel
 import com.example.dicodingmovieapps.ui.home.movies.MoviesViewModel
 
 @Suppress("UNCHECKED_CAST")
@@ -25,12 +26,15 @@ class ViewModelFactory private constructor(private val mMoviesRepository: Movies
     }
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        when {
+        return when {
             modelClass.isAssignableFrom(MoviesViewModel::class.java) -> {
-                return MoviesViewModel(mMoviesRepository) as T
+                MoviesViewModel(mMoviesRepository) as T
+            }
+            modelClass.isAssignableFrom(FavoriteMoviesViewModel::class.java) -> {
+                FavoriteMoviesViewModel(mMoviesRepository) as T
             }
             modelClass.isAssignableFrom(DetailMoviesViewModel::class.java) -> {
-                return DetailMoviesViewModel(mMoviesRepository) as T
+                DetailMoviesViewModel(mMoviesRepository) as T
             }
 
             else -> throw Throwable("Unknown ViewModel Class: " + modelClass.name)

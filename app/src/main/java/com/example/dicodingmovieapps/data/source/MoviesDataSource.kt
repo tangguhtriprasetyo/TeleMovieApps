@@ -9,6 +9,8 @@ interface MoviesDataSource {
 
     fun getListMovies(): LiveData<Resource<PagedList<MoviesEntity>>>
 
+    fun getFavoriteMovies(): LiveData<PagedList<MoviesEntity>>
+
     fun getMovieWithDetail(movieId: Int): LiveData<Resource<MoviesWithDetail>>
 
     fun getCastMovie(movieId: Int): LiveData<Resource<CastMoviesEntity>>
@@ -16,6 +18,8 @@ interface MoviesDataSource {
     fun setFavoriteMovies(movie: MoviesEntity, state: Boolean)
 
     fun getListTv(): LiveData<Resource<PagedList<TvEntity>>>
+
+    fun getFavoriteTv(): LiveData<PagedList<TvEntity>>
 
     fun getTvWithDetail(tvId: Int): LiveData<Resource<TvWithDetail>>
 

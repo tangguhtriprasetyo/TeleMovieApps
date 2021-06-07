@@ -10,7 +10,6 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.dicodingmovieapps.R
 import com.example.dicodingmovieapps.databinding.ActivityFavoriteBinding
 import com.example.dicodingmovieapps.ui.home.HomeActivity
-import com.example.dicodingmovieapps.ui.home.SectionsPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -25,9 +24,9 @@ class FavoriteActivity : AppCompatActivity() {
 
         binding.bottomNavFavorite.selectedItemId = R.id.favorite
 
-        val sectionsPagerAdapter = SectionsPagerAdapter(this)
+        val favoritePagerAdapter = FavoritePagerAdapter(this)
         val viewPager: ViewPager2 = binding.viewPagerFavorite
-        viewPager.adapter = sectionsPagerAdapter
+        viewPager.adapter = favoritePagerAdapter
         val tabs: TabLayout = binding.tabsFavorite
 
         TabLayoutMediator(tabs, viewPager) { tab, position ->

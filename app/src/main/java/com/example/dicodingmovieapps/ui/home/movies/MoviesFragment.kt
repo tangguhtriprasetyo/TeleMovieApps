@@ -57,13 +57,13 @@ class MoviesFragment : Fragment(), MoviesClickCallback {
     }
 
     private fun getTabs() {
-        if (arguments?.get(ARG_SECTION_NUMBER) == 1) {
-            setDataMovies()
-        } else if (arguments?.get(ARG_SECTION_NUMBER) == 2) {
-            setDataTv()
-        } else {
-            showError(true)
-            showLoading(false)
+        when (arguments?.get(ARG_SECTION_NUMBER)) {
+            1 -> setDataMovies()
+            2 -> setDataTv()
+            else -> {
+                showError(true)
+                showLoading(false)
+            }
         }
     }
 
@@ -138,8 +138,10 @@ class MoviesFragment : Fragment(), MoviesClickCallback {
     private fun showError(state: Boolean) {
         if (state) {
             binding.tvErrorMessage.visibility = View.VISIBLE
+            binding.rvMovies.visibility = View.GONE
         } else {
             binding.tvErrorMessage.visibility = View.GONE
+            binding.rvMovies.visibility = View.VISIBLE
         }
     }
 

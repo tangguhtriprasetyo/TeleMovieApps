@@ -3,6 +3,7 @@ package com.example.dicodingmovieapps.ui.detail
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.dicodingmovieapps.R
@@ -23,6 +24,8 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
     private lateinit var dataMovies: MoviesEntity
     private lateinit var dataTv: TvEntity
+    private lateinit var detailDataMovies: MoviesWithDetail
+    private lateinit var detailDataTv: TvWithDetail
     private lateinit var detailMoviesViewModel: DetailMoviesViewModel
     private var isFavorite = false
     private var isTv = false
@@ -42,7 +45,12 @@ class DetailActivity : AppCompatActivity() {
         getDetailData()
 
         binding.addFavorite.setOnClickListener {
-            setFavorite()
+            if (isTv) {
+                setFavoriteTv()
+            } else {
+                setFavoriteMovies()
+            }
+
         }
 
         binding.tvErrorMessage.setOnClickListener {
@@ -50,13 +58,22 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setFavorite() {
-        if (isFavorite) {
-            binding.addFavorite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+    private fun setFavoriteMovies() {
+        if (!detailDataMovies.mMovies.favorite) {
+            Toast.makeText(this, "Added to Favorite!", Toast.LENGTH_SHORT).show()
         } else {
-            binding.addFavorite.setImageResource(R.drawable.ic_baseline_favorite_24)
+            Toast.makeText(this, "Deleted from Favorite!", Toast.LENGTH_SHORT).show()
         }
-        isFavorite = !isFavorite
+        detailMoviesViewModel.setFavoriteMovie(detailDataMovies.mMovies)
+    }
+
+    private fun setFavoriteTv() {
+        if (!detailDataTv.mTv.favorite) {
+            Toast.makeText(this, "Added to Favorite!", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "Deleted from Favorite!", Toast.LENGTH_SHORT).show()
+        }
+        detailMoviesViewModel.setFavoriteTv(detailDataTv.mTv)
     }
 
     private fun getDetailData() {
@@ -72,7 +89,8 @@ class DetailActivity : AppCompatActivity() {
                             }
                             Status.SUCCESS -> if (detailData.data != null) {
                                 showLoading(false)
-                                initDetailDataTv(detailData.data)
+                                detailDataTv = detailData.data
+                                initDetailDataTv(detailDataTv)
                             }
                             Status.ERROR -> {
                                 showError(true)
@@ -112,7 +130,8 @@ class DetailActivity : AppCompatActivity() {
                             }
                             Status.SUCCESS -> if (detailData.data != null) {
                                 showLoading(false)
-                                initDetailDataMovie(detailData.data)
+                                detailDataMovies = detailData.data
+                                initDetailDataMovie(detailDataMovies)
                             }
                             Status.ERROR -> {
                                 showError(true)
@@ -146,6 +165,11 @@ class DetailActivity : AppCompatActivity() {
         val score = "${moviesEntity.mDetailMovie?.userScore} %"
 
         with(binding) {
+            if (!moviesEntity.mMovies.favorite) {
+                binding.addFavorite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+            } else {
+                binding.addFavorite.setImageResource(R.drawable.ic_baseline_favorite_24)
+            }
 
             collapseToolbar.title = moviesEntity.mDetailMovie?.title
             tvReleaseDate.text = moviesEntity.mDetailMovie?.releaseDate ?: "2020"
@@ -181,6 +205,11 @@ class DetailActivity : AppCompatActivity() {
         val score = "${tvEntity.mDetailTv?.userScore} %"
 
         with(binding) {
+            if (!tvEntity.mTv.favorite) {
+                binding.addFavorite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+            } else {
+                binding.addFavorite.setImageResource(R.drawable.ic_baseline_favorite_24)
+            }
 
             collapseToolbar.title = tvEntity.mDetailTv?.name
             tvReleaseDate.text = tvEntity.mDetailTv?.releaseDate ?: "2020"

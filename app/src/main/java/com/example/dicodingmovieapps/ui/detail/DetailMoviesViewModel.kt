@@ -3,10 +3,7 @@ package com.example.dicodingmovieapps.ui.detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.dicodingmovieapps.data.source.MoviesRepository
-import com.example.dicodingmovieapps.data.source.local.entity.CastMoviesEntity
-import com.example.dicodingmovieapps.data.source.local.entity.CastTvEntity
-import com.example.dicodingmovieapps.data.source.local.entity.MoviesWithDetail
-import com.example.dicodingmovieapps.data.source.local.entity.TvWithDetail
+import com.example.dicodingmovieapps.data.source.local.entity.*
 import com.example.dicodingmovieapps.vo.Resource
 
 class DetailMoviesViewModel(private val moviesRepository: MoviesRepository) : ViewModel() {
@@ -24,5 +21,15 @@ class DetailMoviesViewModel(private val moviesRepository: MoviesRepository) : Vi
 
     fun getTvCredit(tvId: Int): LiveData<Resource<CastTvEntity>> =
         moviesRepository.getCastTv(tvId)
+
+    fun setFavoriteMovie(moviesEntity: MoviesEntity) {
+        val isFavorite = !moviesEntity.favorite
+        moviesRepository.setFavoriteMovies(moviesEntity, isFavorite)
+    }
+
+    fun setFavoriteTv(tvEntity: TvEntity) {
+        val isFavorite = !tvEntity.favorite
+        moviesRepository.setFavoriteTv(tvEntity, isFavorite)
+    }
 
 }

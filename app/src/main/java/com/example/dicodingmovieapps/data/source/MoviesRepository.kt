@@ -1,6 +1,7 @@
 package com.example.dicodingmovieapps.data.source
 
 import androidx.lifecycle.LiveData
+import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.dicodingmovieapps.data.source.local.LocalDataSource
 import com.example.dicodingmovieapps.data.source.local.entity.*
@@ -153,6 +154,15 @@ class MoviesRepository private constructor(
         }.asLiveData()
     }
 
+    override fun getFavoriteMovies(): LiveData<PagedList<MoviesEntity>> {
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setInitialLoadSizeHint(4)
+            .setPageSize(4)
+            .build()
+        return LivePagedListBuilder(localDataSource.getFavoriteMovies(), config).build()
+    }
+
     override fun setFavoriteMovies(movie: MoviesEntity, state: Boolean) {
         appExecutors.diskIO().execute { localDataSource.setFavoriteMovies(movie, state) }
     }
@@ -274,6 +284,15 @@ class MoviesRepository private constructor(
                 localDataSource.insertCastTv(tvCredit)
             }
         }.asLiveData()
+    }
+
+    override fun getFavoriteTv(): LiveData<PagedList<TvEntity>> {
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setInitialLoadSizeHint(4)
+            .setPageSize(4)
+            .build()
+        return LivePagedListBuilder(localDataSource.getFavoriteTv(), config).build()
     }
 
     override fun setFavoriteTv(tv: TvEntity, state: Boolean) {
