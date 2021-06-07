@@ -6,25 +6,25 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 
 @Entity(
-    tableName = "detailMovieEntities",
-    primaryKeys = ["detailMovieId", "movieId"],
+    tableName = "detailTvEntities",
+    primaryKeys = ["detailTvId", "tvId"],
     foreignKeys = [ForeignKey(
-        entity = MoviesEntity::class,
-        parentColumns = ["movieId"],
-        childColumns = ["movieId"]
+        entity = TvEntity::class,
+        parentColumns = ["tvId"],
+        childColumns = ["tvId"]
     )]
 )
-data class DetailMoviesEntity(
+data class DetailTvEntity(
     @NonNull
-    @ColumnInfo(name = "detailMovieId")
-    var detailMovieId: Int,
+    @ColumnInfo(name = "detailTvId")
+    var detailTvId: Int,
 
     @NonNull
-    @ColumnInfo(name = "movieId")
-    var movieId: Int,
+    @ColumnInfo(name = "tvId")
+    var tvId: Int,
 
-    @ColumnInfo(name = "title")
-    var title: String? = null,
+    @ColumnInfo(name = "name")
+    var name: String? = null,
 
     @ColumnInfo(name = "posterHeader")
     var posterHeader: String? = null,

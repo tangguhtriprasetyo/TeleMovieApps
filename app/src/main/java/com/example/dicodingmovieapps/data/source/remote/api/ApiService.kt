@@ -12,7 +12,7 @@ import retrofit2.http.Query
 
 interface ApiService {
 
-    @GET("movie/popular")
+    @GET("movie/now_playing")
     fun getMoviesList(
         @Query("api_key") apiKey: String = BuildConfig.API_AUTH
     ): Call<MoviesResponse>
@@ -29,7 +29,7 @@ interface ApiService {
         @Query("api_key") apiKey: String = BuildConfig.API_AUTH
     ): Call<MoviesCreditResponse>
 
-    @GET("tv/popular")
+    @GET("tv/on_the_air")
     fun getTvList(
         @Query("api_key") apiKey: String = BuildConfig.API_AUTH
     ): Call<MoviesResponse>

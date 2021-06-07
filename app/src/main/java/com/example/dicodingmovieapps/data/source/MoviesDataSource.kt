@@ -2,9 +2,7 @@ package com.example.dicodingmovieapps.data.source
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
-import com.example.dicodingmovieapps.data.source.local.entity.CastMoviesEntity
-import com.example.dicodingmovieapps.data.source.local.entity.MoviesEntity
-import com.example.dicodingmovieapps.data.source.local.entity.MoviesWithDetail
+import com.example.dicodingmovieapps.data.source.local.entity.*
 import com.example.dicodingmovieapps.vo.Resource
 
 interface MoviesDataSource {
@@ -16,4 +14,12 @@ interface MoviesDataSource {
     fun getCastMovie(movieId: Int): LiveData<Resource<CastMoviesEntity>>
 
     fun setFavoriteMovies(movie: MoviesEntity, state: Boolean)
+
+    fun getListTv(): LiveData<Resource<PagedList<TvEntity>>>
+
+    fun getTvWithDetail(tvId: Int): LiveData<Resource<TvWithDetail>>
+
+    fun getCastTv(tvId: Int): LiveData<Resource<CastTvEntity>>
+
+    fun setFavoriteTv(tv: TvEntity, state: Boolean)
 }

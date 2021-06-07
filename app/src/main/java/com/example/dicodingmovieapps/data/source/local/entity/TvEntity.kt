@@ -8,12 +8,12 @@ import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-@Entity(tableName = "moviesEntities")
-data class MoviesEntity(
+@Entity(tableName = "tvEntities")
+data class TvEntity(
     @PrimaryKey
     @NonNull
-    @ColumnInfo(name = "movieId")
-    var movieId: Int,
+    @ColumnInfo(name = "tvId")
+    var tvId: Int,
 
     @ColumnInfo(name = "posterThumbnail")
     var posterThumbnail: String? = null,

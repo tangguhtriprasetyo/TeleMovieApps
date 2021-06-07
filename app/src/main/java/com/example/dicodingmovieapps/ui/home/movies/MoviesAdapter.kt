@@ -44,7 +44,7 @@ class MoviesAdapter(private val moviesClickCallback: MoviesClickCallback) :
         fun bind(movies: MoviesEntity) {
             with(binding) {
                 itemView.setOnClickListener {
-                    moviesClickCallback.onItemClicked(movies)
+                    moviesClickCallback.onItemMovieClicked(movies)
                 }
 
                 imgMovies.loadImage("https://image.tmdb.org/t/p/w600_and_h900_bestv2${movies.posterThumbnail}")

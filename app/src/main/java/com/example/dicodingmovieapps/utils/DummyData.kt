@@ -17,7 +17,6 @@ object DummyData {
             MoviesEntity(
                 1,
                 "Tom Clancy's Without Remorse",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/rEm96ib0sPiZBADNKBHKBv5bve9.jpg",
                 false
             )
         )
@@ -25,7 +24,6 @@ object DummyData {
             MoviesEntity(
                 2,
                 "Mortal Kombat",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/nkayOAUBUu4mMvyNf9iHSUiPjF1.jpg",
                 false
             )
         )
@@ -33,7 +31,6 @@ object DummyData {
             MoviesEntity(
                 3,
                 "Godzilla vs. Kong",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/pgqgaUx1cJb5oZQQ5v0tNARCeBp.jpg",
                 false
             )
         )
@@ -41,7 +38,6 @@ object DummyData {
             MoviesEntity(
                 4,
                 "22 vs. Earth ",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/32vLDKSzcCMh55zqqaSqqUA8naz.jpg",
                 false
             )
         )
@@ -49,7 +45,6 @@ object DummyData {
             MoviesEntity(
                 5,
                 "Demon Slayer -Kimetsu no Yaiba- The Movie: Mugen Train ",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/h8Rb9gBr48ODIwYUttZNYeMWeUU.jpg",
                 false
             )
         )
@@ -57,7 +52,6 @@ object DummyData {
             MoviesEntity(
                 6,
                 "Raya and the Last Dragon ",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/lPsD10PP4rgUGiGR4CCXA6iY0QQ.jpg",
                 false
             )
         )
@@ -65,7 +59,6 @@ object DummyData {
             MoviesEntity(
                 7,
                 "Nobody",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/oBgWY00bEFeZ9N25wWVyuQddbAo.jpg",
                 false
             )
         )
@@ -73,7 +66,6 @@ object DummyData {
             MoviesEntity(
                 8,
                 "Zack Snyder's Justice League ",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/tnAuB8q5vv7Ax9UAEje5Xi4BXik.jpg",
                 false
             )
         )
@@ -81,7 +73,6 @@ object DummyData {
             MoviesEntity(
                 9,
                 "Tom & Jerry",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/8XZI9QZ7Pm3fVkigWJPbrXCMzjq.jpg",
                 false
             )
         )
@@ -89,7 +80,6 @@ object DummyData {
             MoviesEntity(
                 10,
                 "Chaos Walking ",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/9kg73Mg8WJKlB9Y2SAJzeDKAnuB.jpg",
                 false
             )
         )
@@ -105,7 +95,6 @@ object DummyData {
             MoviesEntity(
                 11,
                 "The Flash",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/lJA2RCMfsWoskqlQhXPSLFQGXEJ.jpg",
                 false
             )
         )
@@ -113,7 +102,6 @@ object DummyData {
             MoviesEntity(
                 12,
                 "Grey's Anatomy",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/clnyhPqj1SNgpAdeSS6a6fwE6Bo.jpg",
                 false
             )
         )
@@ -121,7 +109,6 @@ object DummyData {
             MoviesEntity(
                 13,
                 "Riverdale",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/wRbjVBdDo5qHAEOVYoMWpM58FSA.jpg",
                 false
             )
         )
@@ -129,7 +116,6 @@ object DummyData {
             MoviesEntity(
                 14,
                 "The Bad Batch",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/WjQmEWFrOf98nT5aEfUfVYz9N2.jpg",
                 false
             )
         )
@@ -137,7 +123,6 @@ object DummyData {
             MoviesEntity(
                 15,
                 "Lucifer",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/4EYPN5mVIhKLfxGruy7Dy41dTVn.jpg",
                 false
             )
         )
@@ -145,7 +130,6 @@ object DummyData {
             MoviesEntity(
                 16,
                 "The Handmaid's Tale ",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/oIkxqt6ug5zT5ZSUUyc1Iqopf02.jpg",
                 false
             )
         )
@@ -153,7 +137,6 @@ object DummyData {
             MoviesEntity(
                 17,
                 "Game of Thrones",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/u3bZgnGQ9T01sWNhyveQz0wH0Hl.jpg",
                 false
             )
         )
@@ -161,7 +144,6 @@ object DummyData {
             MoviesEntity(
                 18,
                 "Legacies",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/qTZIgXrBKURBK1KrsT7fe3qwtl9.jpg",
                 false
             )
         )
@@ -169,7 +151,6 @@ object DummyData {
             MoviesEntity(
                 19,
                 "The Walking Dead",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/rqeYMLryjcawh2JeRpCVUDXYM5b.jpg",
                 false
             )
         )
@@ -177,7 +158,6 @@ object DummyData {
             MoviesEntity(
                 20,
                 "The Good Doctor",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/6tfT03sGp9k4c0J3dypjrI8TSAI.jpg",
                 false
             )
         )

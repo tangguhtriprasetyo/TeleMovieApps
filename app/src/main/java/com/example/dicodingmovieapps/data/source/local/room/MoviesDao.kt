@@ -3,10 +3,7 @@ package com.example.dicodingmovieapps.data.source.local.room
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
-import com.example.dicodingmovieapps.data.source.local.entity.CastMoviesEntity
-import com.example.dicodingmovieapps.data.source.local.entity.DetailMoviesEntity
-import com.example.dicodingmovieapps.data.source.local.entity.MoviesEntity
-import com.example.dicodingmovieapps.data.source.local.entity.MoviesWithDetail
+import com.example.dicodingmovieapps.data.source.local.entity.*
 
 @Dao
 interface MoviesDao {
@@ -34,5 +31,30 @@ interface MoviesDao {
 
     @Update
     fun updateMovies(movies: MoviesEntity)
+
+    //TV Query
+    @Query("SELECT * FROM tvEntities")
+    fun getTv(): DataSource.Factory<Int, TvEntity>
+
+    @Query("SELECT * FROM tvEntities where favorite = 1")
+    fun getFavoriteTv(): DataSource.Factory<Int, TvEntity>
+
+    @Query("SELECT * FROM tvEntities where tvId = :tvId")
+    fun getTvWithDetailById(tvId: Int): LiveData<TvWithDetail>
+
+    @Query("SELECT * FROM castTvEntities where castTvId = :tvId")
+    fun getCastTv(tvId: Int): LiveData<CastTvEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertTv(tv: List<TvEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertDetailTv(tv: DetailTvEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertCastTv(tv: CastTvEntity)
+
+    @Update
+    fun updateTv(tv: TvEntity)
 
 }

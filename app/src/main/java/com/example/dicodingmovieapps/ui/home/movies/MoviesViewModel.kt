@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
 import com.example.dicodingmovieapps.data.source.MoviesRepository
 import com.example.dicodingmovieapps.data.source.local.entity.MoviesEntity
+import com.example.dicodingmovieapps.data.source.local.entity.TvEntity
 import com.example.dicodingmovieapps.vo.Resource
 
 class MoviesViewModel(private val moviesRepository: MoviesRepository) : ViewModel() {
@@ -12,7 +13,13 @@ class MoviesViewModel(private val moviesRepository: MoviesRepository) : ViewMode
     fun getDataMovies(index: Int): LiveData<Resource<PagedList<MoviesEntity>>>? {
         return when (index) {
             1 -> moviesRepository.getListMovies()
-            2 -> moviesRepository.getListMovies()
+            else -> null
+        }
+    }
+
+    fun getDataTv(index: Int): LiveData<Resource<PagedList<TvEntity>>>? {
+        return when (index) {
+            2 -> moviesRepository.getListTv()
             else -> null
         }
     }

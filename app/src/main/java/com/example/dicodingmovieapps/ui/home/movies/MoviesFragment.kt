@@ -2,6 +2,7 @@ package com.example.dicodingmovieapps.ui.home.movies
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.dicodingmovieapps.data.source.local.entity.MoviesEntity
+import com.example.dicodingmovieapps.data.source.local.entity.TvEntity
 import com.example.dicodingmovieapps.databinding.FragmentMoviesBinding
 import com.example.dicodingmovieapps.ui.detail.DetailActivity
 import com.example.dicodingmovieapps.viewmodel.ViewModelFactory
@@ -46,15 +48,27 @@ class MoviesFragment : Fragment(), MoviesClickCallback {
         if (activity != null) {
             val factory = ViewModelFactory.getInstance(requireActivity())
             moviesViewModel = ViewModelProvider(this, factory)[MoviesViewModel::class.java]
-            setDataMovies()
+            getTabs()
         }
 
         binding.tvErrorMessage.setOnClickListener {
+            getTabs()
+        }
+    }
+
+    private fun getTabs() {
+        if (arguments?.get(ARG_SECTION_NUMBER) == 1) {
             setDataMovies()
+        } else if (arguments?.get(ARG_SECTION_NUMBER) == 2) {
+            setDataTv()
+        } else {
+            showError(true)
+            showLoading(false)
         }
     }
 
     private fun setDataMovies() {
+        Log.d("setDataMovies: ", arguments?.get(ARG_SECTION_NUMBER).toString())
         val moviesAdapter = MoviesAdapter(this@MoviesFragment)
         moviesViewModel.getDataMovies((arguments?.get(ARG_SECTION_NUMBER) ?: 1) as Int)
             ?.observe(viewLifecycleOwner, { moviesData ->
@@ -67,6 +81,7 @@ class MoviesFragment : Fragment(), MoviesClickCallback {
                         Status.SUCCESS -> {
                             showLoading(false)
                             moviesAdapter.submitList(moviesData.data)
+                            Log.d("movieAdapter: ", moviesData.data.toString())
                         }
                         Status.ERROR -> {
                             showError(true)
@@ -80,7 +95,36 @@ class MoviesFragment : Fragment(), MoviesClickCallback {
             setHasFixedSize(true)
             adapter = moviesAdapter
         }
+    }
 
+    private fun setDataTv() {
+        Log.d("setDataTv: ", arguments?.get(ARG_SECTION_NUMBER).toString())
+        val tvAdapter = TvAdapter(this@MoviesFragment)
+        moviesViewModel.getDataTv((arguments?.get(ARG_SECTION_NUMBER) ?: 2) as Int)
+            ?.observe(viewLifecycleOwner, { tvData ->
+                if (tvData != null) {
+                    when (tvData.status) {
+                        Status.LOADING -> {
+                            showLoading(true)
+                            showError(false)
+                        }
+                        Status.SUCCESS -> {
+                            showLoading(false)
+                            tvAdapter.submitList(tvData.data)
+                            Log.d("tvAdapter: ", tvData.data.toString())
+                        }
+                        Status.ERROR -> {
+                            showError(true)
+                            showLoading(false)
+                        }
+                    }
+                }
+            })
+        with(binding.rvMovies) {
+            layoutManager = GridLayoutManager(context, 2)
+            setHasFixedSize(true)
+            adapter = tvAdapter
+        }
     }
 
     private fun showLoading(state: Boolean) {
@@ -99,11 +143,21 @@ class MoviesFragment : Fragment(), MoviesClickCallback {
         }
     }
 
-    override fun onItemClicked(movies: MoviesEntity) {
-        val isTv = arguments?.get(ARG_SECTION_NUMBER) ?: 1 != 1
+    override fun onItemMovieClicked(movies: MoviesEntity) {
+        val isTv = false
+        Log.d("onItemMovieClicked: ", isTv.toString())
         val intent = Intent(activity, DetailActivity::class.java)
         intent.putExtra(DetailActivity.EXTRA_MOVIES, movies)
-        intent.putExtra(DetailActivity.EXTRA_TV, isTv)
+        intent.putExtra(DetailActivity.EXTRA_IS_TV, isTv)
+        startActivity(intent)
+    }
+
+    override fun onItemTvClicked(tv: TvEntity) {
+        val isTv = true
+        Log.d("onItemTvClicked: ", isTv.toString())
+        val intent = Intent(activity, DetailActivity::class.java)
+        intent.putExtra(DetailActivity.EXTRA_TV, tv)
+        intent.putExtra(DetailActivity.EXTRA_IS_TV, isTv)
         startActivity(intent)
     }
 }

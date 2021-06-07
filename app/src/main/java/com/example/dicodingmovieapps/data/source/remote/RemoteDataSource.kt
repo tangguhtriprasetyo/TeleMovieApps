@@ -89,52 +89,66 @@ class RemoteDataSource {
         return resultMovieCredits
     }
 
-    //TV Data
-
-    suspend fun getTvList(callback: LoadMoviesCallback) {
+    fun getTvList(): LiveData<ApiResponse<List<ResultsItem>>> {
         EspressoIdlingResource.increment()
-        ApiConfig.apiInstance.getTvList().await().results?.let { listMovies ->
-            callback.onAllMoviesReceived(listMovies as List<ResultsItem>)
-            EspressoIdlingResource.decrement()
+        val resultTv = MutableLiveData<ApiResponse<List<ResultsItem>>>()
+        CoroutineScope(IO).launch {
+            try {
+                val tv = ApiConfig.apiInstance.getTvList().await()
+                resultTv.postValue(ApiResponse.success(tv.results as List<ResultsItem>))
+            } catch (e: IOException) {
+                e.printStackTrace()
+                resultTv.postValue(
+                    ApiResponse.error(
+                        e.message.toString(),
+                        mutableListOf()
+                    )
+                )
+            }
         }
+        EspressoIdlingResource.decrement()
+        return resultTv
     }
 
-    suspend fun getDetailTv(movieId: Int, callback: LoadDetailTvCallback) {
+    fun getDetailTv(tvId: Int): LiveData<ApiResponse<DetailTvResponse>> {
         EspressoIdlingResource.increment()
-        ApiConfig.apiInstance.getDetailTv(movieId).await().let { detailMovie ->
-            callback.onDetailTvReceived(detailMovie)
-            EspressoIdlingResource.decrement()
+        val resultDetailTv = MutableLiveData<ApiResponse<DetailTvResponse>>()
+        CoroutineScope(IO).launch {
+            try {
+                val detailTv = ApiConfig.apiInstance.getDetailTv(tvId).await()
+                resultDetailTv.postValue(ApiResponse.success(detailTv))
+            } catch (e: IOException) {
+                e.printStackTrace()
+                resultDetailTv.postValue(
+                    ApiResponse.error(
+                        e.message.toString(),
+                        DetailTvResponse()
+                    )
+                )
+            }
         }
+        EspressoIdlingResource.decrement()
+        return resultDetailTv
     }
 
-    suspend fun getTvCredits(tvId: Int, callback: LoadTvCredits) {
+    fun getTvCredits(tvId: Int): LiveData<ApiResponse<MoviesCreditResponse>> {
         EspressoIdlingResource.increment()
-        ApiConfig.apiInstance.getCreditsTv(tvId).await().let { tvCredit ->
-            callback.onTvCreditReceived(tvCredit)
-            EspressoIdlingResource.decrement()
+        val resultTvCredits = MutableLiveData<ApiResponse<MoviesCreditResponse>>()
+        CoroutineScope(IO).launch {
+            try {
+                val tvCredits = ApiConfig.apiInstance.getCreditsTv(tvId).await()
+                resultTvCredits.postValue(ApiResponse.success(tvCredits))
+            } catch (e: IOException) {
+                e.printStackTrace()
+                resultTvCredits.postValue(
+                    ApiResponse.error(
+                        e.message.toString(),
+                        MoviesCreditResponse()
+                    )
+                )
+            }
         }
-
+        EspressoIdlingResource.decrement()
+        return resultTvCredits
     }
-
-}
-
-
-interface LoadMoviesCallback {
-    fun onAllMoviesReceived(moviesResponse: List<ResultsItem>)
-}
-
-interface LoadDetailMovieCallback {
-    fun onDetailMovieReceived(detailMovieResponse: DetailMovieResponse)
-}
-
-interface LoadDetailTvCallback {
-    fun onDetailTvReceived(detailTvResponse: DetailTvResponse)
-}
-
-interface LoadMovieCredits {
-    fun onMovieCreditReceived(moviesCreditResponse: MoviesCreditResponse)
-}
-
-interface LoadTvCredits {
-    fun onTvCreditReceived(tvCreditResponse: MoviesCreditResponse)
 }

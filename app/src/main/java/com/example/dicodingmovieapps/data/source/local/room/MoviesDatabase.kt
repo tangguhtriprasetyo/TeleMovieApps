@@ -4,12 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.dicodingmovieapps.data.source.local.entity.CastMoviesEntity
-import com.example.dicodingmovieapps.data.source.local.entity.DetailMoviesEntity
-import com.example.dicodingmovieapps.data.source.local.entity.MoviesEntity
+import com.example.dicodingmovieapps.data.source.local.entity.*
 
 @Database(
-    entities = [MoviesEntity::class, DetailMoviesEntity::class, CastMoviesEntity::class],
+    entities = [MoviesEntity::class, DetailMoviesEntity::class, CastMoviesEntity::class, TvEntity::class, DetailTvEntity::class, CastTvEntity::class],
     version = 1,
     exportSchema = false
 )
