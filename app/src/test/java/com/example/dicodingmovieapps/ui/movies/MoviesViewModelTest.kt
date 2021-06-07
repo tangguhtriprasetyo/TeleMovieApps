@@ -3,10 +3,13 @@ package com.example.dicodingmovieapps.ui.movies
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import com.example.dicodingmovieapps.data.source.MoviesRepository
 import com.example.dicodingmovieapps.data.source.local.entity.MoviesEntity
+import com.example.dicodingmovieapps.data.source.local.entity.TvEntity
 import com.example.dicodingmovieapps.ui.home.movies.MoviesViewModel
-import com.example.dicodingmovieapps.utils.DummyData
+import com.example.dicodingmovieapps.utils.SortUtils
+import com.example.dicodingmovieapps.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -29,7 +32,16 @@ class MoviesViewModelTest {
     private lateinit var moviesRepository: MoviesRepository
 
     @Mock
-    private lateinit var observer: Observer<List<MoviesEntity>>
+    private lateinit var observer: Observer<Resource<PagedList<MoviesEntity>>>
+
+    @Mock
+    private lateinit var observerTv: Observer<Resource<PagedList<TvEntity>>>
+
+    @Mock
+    private lateinit var pagedList: PagedList<MoviesEntity>
+
+    @Mock
+    private lateinit var pagedListTv: PagedList<TvEntity>
 
     @Before
     fun setUp() {
@@ -38,39 +50,37 @@ class MoviesViewModelTest {
 
     @Test
     fun getListMovies() {
-        val dummyMovies = DummyData.generateDataMovies()
-        val movies = MutableLiveData<List<MoviesEntity>>()
+        val dummyMovies = Resource.success(pagedList)
+        `when`(dummyMovies.data?.size).thenReturn(5)
+        val movies = MutableLiveData<Resource<PagedList<MoviesEntity>>>()
         movies.value = dummyMovies
 
-        `when`(moviesRepository.getListMovies()).thenReturn(movies)
-        val moviesEntities = viewModel.getDataMovies(1)?.value
-        verify(moviesRepository).getListMovies()
+        `when`(moviesRepository.getListMovies(SortUtils.DEFAULT)).thenReturn(movies)
+        val moviesEntities = viewModel.getDataMovies(1, SortUtils.DEFAULT)?.value?.data
+        verify(moviesRepository).getListMovies(SortUtils.DEFAULT)
 
         assertNotNull(moviesEntities)
-        assertEquals(10, moviesEntities?.size)
-        assertEquals(dummyMovies[0].title, moviesEntities?.get(0)?.title)
-        assertEquals(dummyMovies[0].posterThumbnail, moviesEntities?.get(0)?.posterThumbnail)
+        assertEquals(5, moviesEntities?.size)
 
-        viewModel.getDataMovies(1)?.observeForever(observer)
+        viewModel.getDataMovies(1, SortUtils.DEFAULT)?.observeForever(observer)
         verify(observer).onChanged(dummyMovies)
     }
 
     @Test
     fun getListTv() {
-        val dummyTvSeries = DummyData.generateDataTvSeries()
-        val tvSeries = MutableLiveData<List<MoviesEntity>>()
+        val dummyTvSeries = Resource.success(pagedListTv)
+        `when`(dummyTvSeries.data?.size).thenReturn(5)
+        val tvSeries = MutableLiveData<Resource<PagedList<TvEntity>>>()
         tvSeries.value = dummyTvSeries
 
-        `when`(moviesRepository.getListTv()).thenReturn(tvSeries)
-        val tvEntities = viewModel.getDataMovies(2)?.value
-        verify(moviesRepository).getListTv()
+        `when`(moviesRepository.getListTv(SortUtils.DEFAULT)).thenReturn(tvSeries)
+        val tvEntities = viewModel.getDataTv(2, SortUtils.DEFAULT)?.value?.data
+        verify(moviesRepository).getListTv(SortUtils.DEFAULT)
 
         assertNotNull(tvEntities)
-        assertEquals(10, tvEntities?.size)
-        assertEquals(dummyTvSeries[0].title, tvEntities?.get(0)?.title)
-        assertEquals(dummyTvSeries[0].posterThumbnail, tvEntities?.get(0)?.posterThumbnail)
+        assertEquals(5, tvEntities?.size)
 
-        viewModel.getDataMovies(2)?.observeForever(observer)
-        verify(observer).onChanged(dummyTvSeries)
+        viewModel.getDataTv(2, SortUtils.DEFAULT)?.observeForever(observerTv)
+        verify(observerTv).onChanged(dummyTvSeries)
     }
 }

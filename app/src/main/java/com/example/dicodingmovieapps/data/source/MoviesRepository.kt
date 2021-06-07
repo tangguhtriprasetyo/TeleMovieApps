@@ -44,7 +44,7 @@ class MoviesRepository private constructor(
                     .setInitialLoadSizeHint(4)
                     .setPageSize(4)
                     .build()
-                return androidx.paging.LivePagedListBuilder(
+                return LivePagedListBuilder(
                     localDataSource.getAllMovies(query),
                     config
                 )
@@ -180,7 +180,7 @@ class MoviesRepository private constructor(
                     .setInitialLoadSizeHint(4)
                     .setPageSize(4)
                     .build()
-                return androidx.paging.LivePagedListBuilder(localDataSource.getAllTv(query), config)
+                return LivePagedListBuilder(localDataSource.getAllTv(query), config)
                     .build()
             }
 

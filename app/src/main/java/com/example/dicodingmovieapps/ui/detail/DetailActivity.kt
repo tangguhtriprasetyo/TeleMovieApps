@@ -27,7 +27,6 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var detailDataMovies: MoviesWithDetail
     private lateinit var detailDataTv: TvWithDetail
     private lateinit var detailMoviesViewModel: DetailMoviesViewModel
-    private var isFavorite = false
     private var isTv = false
 
     override fun onCreate(savedInstanceState: Bundle?) {

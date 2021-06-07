@@ -14,7 +14,7 @@ object SortUtils {
         } else if (filter == Lowest) {
             simpleQuery.append("ORDER BY moviesScore ASC")
         } else if (filter == DEFAULT) {
-            simpleQuery.append("ORDER BY RANDOM()")
+            simpleQuery.append("ORDER BY movieId DESC")
         }
         return SimpleSQLiteQuery(simpleQuery.toString())
     }
@@ -26,7 +26,7 @@ object SortUtils {
         } else if (filter == Lowest) {
             simpleQuery.append("ORDER BY tvScore ASC")
         } else if (filter == DEFAULT) {
-            simpleQuery.append("ORDER BY RANDOM()")
+            simpleQuery.append("ORDER BY tvId DESC")
         }
         return SimpleSQLiteQuery(simpleQuery.toString())
     }

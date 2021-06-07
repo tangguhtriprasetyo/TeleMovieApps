@@ -5,11 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.example.dicodingmovieapps.data.source.MoviesRepository
 import com.example.dicodingmovieapps.data.source.local.entity.CastMoviesEntity
-import com.example.dicodingmovieapps.data.source.local.entity.MoviesEntity
+import com.example.dicodingmovieapps.data.source.local.entity.MoviesWithDetail
 import com.example.dicodingmovieapps.utils.DummyData
+import com.example.dicodingmovieapps.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -23,10 +22,7 @@ class DetailMoviesViewModelTest {
 
     private lateinit var viewModel: DetailMoviesViewModel
     private val dummyDetailMovies = DummyData.generateDataMovies()[0]
-    private val moviesId = dummyDetailMovies.id
-    private val dummyDetailTvSeries = DummyData.generateDataTvSeries()[0]
-    private val tvId = dummyDetailTvSeries.id
-    private val dummyCredit = DummyData.generateMovieCredit()[0]
+    private val moviesId = dummyDetailMovies.movieId
 
     @get:Rule
     val rule = InstantTaskExecutorRule()
@@ -35,108 +31,64 @@ class DetailMoviesViewModelTest {
     private lateinit var moviesRepository: MoviesRepository
 
     @Mock
-    private lateinit var detailObserver: Observer<MoviesEntity>
+    private lateinit var detailObserver: Observer<Resource<MoviesWithDetail>>
 
     @Mock
-    private lateinit var creditObserver: Observer<CastMoviesEntity>
+    private lateinit var creditObserver: Observer<Resource<CastMoviesEntity>>
 
     @Before
     fun setUp() {
         viewModel = DetailMoviesViewModel(moviesRepository)
-        viewModel.getDetailMovies(moviesId!!)
+        viewModel.getDetailMovies(moviesId)
     }
 
     @Test
     fun getDetailMovies() {
-        val movie = MutableLiveData<MoviesEntity>()
-        movie.value = dummyDetailMovies
+        val dummyMovieWithDetail =
+            Resource.success(DummyData.generateDummyMovieWithDetail(dummyDetailMovies, true))
+        val movie = MutableLiveData<Resource<MoviesWithDetail>>()
+        movie.value = dummyMovieWithDetail
 
-        `when`(moviesRepository.getDetailMovie(moviesId!!)).thenReturn(movie)
-
-        val moviesEntity = viewModel.getDetailMovies(moviesId).value as MoviesEntity
-
-        assertNotNull(moviesEntity)
-        assertEquals(dummyDetailMovies.title, moviesEntity.title)
-        assertEquals(dummyDetailMovies.userScore, moviesEntity.userScore)
-        assertEquals(dummyDetailMovies.posterThumbnail, moviesEntity.posterThumbnail)
-        assertEquals(dummyDetailMovies.posterHeader, moviesEntity.posterHeader)
-        assertEquals(dummyDetailMovies.duration, moviesEntity.duration)
-        assertEquals(dummyDetailMovies.genre, moviesEntity.genre)
-        assertEquals(dummyDetailMovies.overview, moviesEntity.overview)
-        assertEquals(dummyDetailMovies.releaseDate, moviesEntity.releaseDate)
+        `when`(moviesRepository.getMovieWithDetail(moviesId)).thenReturn(movie)
 
         viewModel.getDetailMovies(moviesId).observeForever(detailObserver)
-        verify(detailObserver).onChanged(dummyDetailMovies)
+        verify(detailObserver).onChanged(dummyMovieWithDetail)
     }
 
     @Test
     fun getDetailTvSeries() {
-        val tvSeries = MutableLiveData<MoviesEntity>()
-        tvSeries.value = dummyDetailTvSeries
+        val dummyTvWithDetail =
+            Resource.success(DummyData.generateDummyMovieWithDetail(dummyDetailMovies, true))
+        val movie = MutableLiveData<Resource<MoviesWithDetail>>()
+        movie.value = dummyTvWithDetail
 
-        `when`(moviesRepository.getDetailTv(tvId!!)).thenReturn(tvSeries)
+        `when`(moviesRepository.getMovieWithDetail(moviesId)).thenReturn(movie)
 
-        val moviesEntity = viewModel.getDetailTv(tvId).value as MoviesEntity
-
-        assertNotNull(moviesEntity)
-        assertEquals(dummyDetailTvSeries.title, moviesEntity.title)
-        assertEquals(dummyDetailTvSeries.userScore, moviesEntity.userScore)
-        assertEquals(dummyDetailTvSeries.posterThumbnail, moviesEntity.posterThumbnail)
-        assertEquals(dummyDetailTvSeries.posterHeader, moviesEntity.posterHeader)
-        assertEquals(dummyDetailTvSeries.duration, moviesEntity.duration)
-        assertEquals(dummyDetailTvSeries.genre, moviesEntity.genre)
-        assertEquals(dummyDetailTvSeries.overview, moviesEntity.overview)
-        assertEquals(dummyDetailTvSeries.releaseDate, moviesEntity.releaseDate)
-
-        viewModel.getDetailTv(tvId).observeForever(detailObserver)
-        verify(detailObserver).onChanged(dummyDetailTvSeries)
+        viewModel.getDetailMovies(moviesId).observeForever(detailObserver)
+        verify(detailObserver).onChanged(dummyTvWithDetail)
     }
 
     @Test
     fun getDetailCreditMovie() {
-        val credit = MutableLiveData<CastMoviesEntity>()
-        credit.value = dummyCredit
+        val dummyCreditMovie = Resource.success(DummyData.generateMovieCredit())
+        val movie = MutableLiveData<Resource<CastMoviesEntity>>()
+        movie.value = dummyCreditMovie
 
-        `when`(moviesRepository.getMovieCredits(moviesId!!)).thenReturn(credit)
-
-        val castMoviesEntity = viewModel.getMovieCredit(moviesId).value as CastMoviesEntity
-
-        assertNotNull(castMoviesEntity)
-        assertEquals(dummyCredit.artist1, castMoviesEntity.artist1)
-        assertEquals(dummyCredit.artist2, castMoviesEntity.artist2)
-        assertEquals(dummyCredit.artist3, castMoviesEntity.artist3)
-        assertEquals(dummyCredit.casting1, castMoviesEntity.casting1)
-        assertEquals(dummyCredit.casting2, castMoviesEntity.casting2)
-        assertEquals(dummyCredit.casting3, castMoviesEntity.casting3)
-        assertEquals(dummyCredit.imgCast1, castMoviesEntity.imgCast1)
-        assertEquals(dummyCredit.imgCast2, castMoviesEntity.imgCast2)
-        assertEquals(dummyCredit.imgCast3, castMoviesEntity.imgCast3)
+        `when`(moviesRepository.getCastMovie(moviesId)).thenReturn(movie)
 
         viewModel.getMovieCredit(moviesId).observeForever(creditObserver)
-        verify(creditObserver).onChanged(dummyCredit)
+        verify(creditObserver).onChanged(dummyCreditMovie)
     }
 
     @Test
     fun getDetailCreditTv() {
-        val credit = MutableLiveData<CastMoviesEntity>()
-        credit.value = dummyCredit
+        val dummyCreditTv = Resource.success(DummyData.generateMovieCredit())
+        val movie = MutableLiveData<Resource<CastMoviesEntity>>()
+        movie.value = dummyCreditTv
 
-        `when`(moviesRepository.getTvCredits(tvId!!)).thenReturn(credit)
+        `when`(moviesRepository.getCastMovie(moviesId)).thenReturn(movie)
 
-        val castMoviesEntity = viewModel.getTvCredit(tvId).value as CastMoviesEntity
-
-        assertNotNull(castMoviesEntity)
-        assertEquals(dummyCredit.artist1, castMoviesEntity.artist1)
-        assertEquals(dummyCredit.artist2, castMoviesEntity.artist2)
-        assertEquals(dummyCredit.artist3, castMoviesEntity.artist3)
-        assertEquals(dummyCredit.casting1, castMoviesEntity.casting1)
-        assertEquals(dummyCredit.casting2, castMoviesEntity.casting2)
-        assertEquals(dummyCredit.casting3, castMoviesEntity.casting3)
-        assertEquals(dummyCredit.imgCast1, castMoviesEntity.imgCast1)
-        assertEquals(dummyCredit.imgCast2, castMoviesEntity.imgCast2)
-        assertEquals(dummyCredit.imgCast3, castMoviesEntity.imgCast3)
-
-        viewModel.getTvCredit(tvId).observeForever(creditObserver)
-        verify(creditObserver).onChanged(dummyCredit)
+        viewModel.getMovieCredit(moviesId).observeForever(creditObserver)
+        verify(creditObserver).onChanged(dummyCreditTv)
     }
 }

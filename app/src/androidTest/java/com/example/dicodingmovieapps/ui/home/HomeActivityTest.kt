@@ -59,9 +59,6 @@ class HomeActivityTest {
         )
 
         onView(withId(R.id.img_header_detail)).check(matches(isDisplayed()))
-        onView(withId(R.id.img_cast1)).check(matches(isDisplayed()))
-        onView(withId(R.id.img_cast2)).check(matches(isDisplayed()))
-        onView(withId(R.id.img_cast3)).check(matches(isDisplayed()))
         onView(withId(R.id.ic_score)).check(matches(isDisplayed()))
         onView(withId(R.id.ic_duration)).check(matches(isDisplayed()))
         onView(withId(R.id.toolbar_detail)).check(matches(isDisplayed()))
@@ -70,6 +67,33 @@ class HomeActivityTest {
         onView(withId(R.id.tv_duration)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_genre)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_overview)).check(matches(isDisplayed()))
+
+        onView(withId(R.id.tv_error_message)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.progress_bar)).check(matches(not(isDisplayed())))
+
+        pressBack()
+    }
+
+    @Test
+    fun addFavoritesAndViewFavorites() {
+        onView(withId(R.id.rv_movies)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                2,
+                click()
+            )
+        )
+
+        onView(withId(R.id.img_header_detail)).check(matches(isDisplayed()))
+        onView(withId(R.id.ic_score)).check(matches(isDisplayed()))
+        onView(withId(R.id.ic_duration)).check(matches(isDisplayed()))
+        onView(withId(R.id.toolbar_detail)).check(matches(isDisplayed()))
+        onView(withId(R.id.collapse_toolbar)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_release_date)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_duration)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_genre)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_overview)).check(matches(isDisplayed()))
+
+        onView(withId(R.id.add_favorite)).perform(click())
 
         onView(withId(R.id.tv_error_message)).check(matches(not(isDisplayed())))
         onView(withId(R.id.progress_bar)).check(matches(not(isDisplayed())))
