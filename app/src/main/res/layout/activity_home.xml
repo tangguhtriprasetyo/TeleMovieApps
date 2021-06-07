@@ -12,21 +12,29 @@
         android:theme="@style/Theme.DicodingMovieApps.AppBarOverlay"
         app:statusBarForeground="@android:color/transparent">
 
-        <ImageView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_home"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:contentDescription="@string/app_name"
-            android:gravity="center"
-            android:minHeight="?actionBarSize"
-            android:src="@drawable/ic_telemovie"
-            android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:theme="@style/Theme.DicodingMovieApps.Toolbar">
+
+            <ImageView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:contentDescription="@string/app_name"
+                android:gravity="center"
+                android:minHeight="?actionBarSize"
+                android:src="@drawable/ic_telemovie"
+                android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.appcompat.widget.Toolbar>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"

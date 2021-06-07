@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.Menu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
@@ -23,6 +24,8 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setSupportActionBar(binding.toolbarHome)
+        supportActionBar?.title = null
         binding.bottomNav.selectedItemId = R.id.home
 
         val sectionsPagerAdapter = SectionsPagerAdapter(this)
@@ -33,6 +36,7 @@ class HomeActivity : AppCompatActivity() {
         TabLayoutMediator(tabs, viewPager) { tab, position ->
             when (position) {
                 0 -> tab.text = getString(R.string.tv_title_movies)
+
                 1 -> tab.text = getString(R.string.tv_title_series)
             }
         }.attach()
@@ -57,6 +61,11 @@ class HomeActivity : AppCompatActivity() {
             overridePendingTransition(0, 0)
             finish()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_sort, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onBackPressed() {

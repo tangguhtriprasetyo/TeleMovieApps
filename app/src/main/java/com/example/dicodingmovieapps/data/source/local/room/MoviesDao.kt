@@ -3,13 +3,14 @@ package com.example.dicodingmovieapps.data.source.local.room
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteQuery
 import com.example.dicodingmovieapps.data.source.local.entity.*
 
 @Dao
 interface MoviesDao {
 
-    @Query("SELECT * FROM moviesEntities")
-    fun getMovies(): DataSource.Factory<Int, MoviesEntity>
+    @RawQuery(observedEntities = [MoviesEntity::class])
+    fun getMovies(query: SupportSQLiteQuery): DataSource.Factory<Int, MoviesEntity>
 
     @Query("SELECT * FROM moviesEntities where favorite = 1")
     fun getFavoriteMovies(): DataSource.Factory<Int, MoviesEntity>
@@ -33,8 +34,8 @@ interface MoviesDao {
     fun updateMovies(movies: MoviesEntity)
 
     //TV Query
-    @Query("SELECT * FROM tvEntities")
-    fun getTv(): DataSource.Factory<Int, TvEntity>
+    @RawQuery(observedEntities = [TvEntity::class])
+    fun getTv(query: SupportSQLiteQuery): DataSource.Factory<Int, TvEntity>
 
     @Query("SELECT * FROM tvEntities where favorite = 1")
     fun getFavoriteTv(): DataSource.Factory<Int, TvEntity>

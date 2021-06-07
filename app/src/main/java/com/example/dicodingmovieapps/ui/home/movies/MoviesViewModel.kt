@@ -10,16 +10,16 @@ import com.example.dicodingmovieapps.vo.Resource
 
 class MoviesViewModel(private val moviesRepository: MoviesRepository) : ViewModel() {
 
-    fun getDataMovies(index: Int): LiveData<Resource<PagedList<MoviesEntity>>>? {
+    fun getDataMovies(index: Int, query: String): LiveData<Resource<PagedList<MoviesEntity>>>? {
         return when (index) {
-            1 -> moviesRepository.getListMovies()
+            1 -> moviesRepository.getListMovies(query)
             else -> null
         }
     }
 
-    fun getDataTv(index: Int): LiveData<Resource<PagedList<TvEntity>>>? {
+    fun getDataTv(index: Int, query: String): LiveData<Resource<PagedList<TvEntity>>>? {
         return when (index) {
-            2 -> moviesRepository.getListTv()
+            2 -> moviesRepository.getListTv(query)
             else -> null
         }
     }

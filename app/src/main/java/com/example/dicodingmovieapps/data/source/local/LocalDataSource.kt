@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import com.example.dicodingmovieapps.data.source.local.entity.*
 import com.example.dicodingmovieapps.data.source.local.room.MoviesDao
+import com.example.dicodingmovieapps.utils.SortUtils
 
 class LocalDataSource private constructor(private val mMoviesDao: MoviesDao) {
 
@@ -14,7 +15,10 @@ class LocalDataSource private constructor(private val mMoviesDao: MoviesDao) {
             INSTANCE ?: LocalDataSource(moviesDao)
     }
 
-    fun getAllMovies(): DataSource.Factory<Int, MoviesEntity> = mMoviesDao.getMovies()
+    fun getAllMovies(query: String): DataSource.Factory<Int, MoviesEntity> {
+        val sortedQuery = SortUtils.getSortedQuery(query)
+        return mMoviesDao.getMovies(sortedQuery)
+    }
 
     fun getFavoriteMovies(): DataSource.Factory<Int, MoviesEntity> = mMoviesDao.getFavoriteMovies()
 
@@ -35,7 +39,10 @@ class LocalDataSource private constructor(private val mMoviesDao: MoviesDao) {
     }
 
     //TV
-    fun getAllTv(): DataSource.Factory<Int, TvEntity> = mMoviesDao.getTv()
+    fun getAllTv(query: String): DataSource.Factory<Int, TvEntity> {
+        val sortedQuery = SortUtils.getSortedQueryTv(query)
+        return mMoviesDao.getTv(sortedQuery)
+    }
 
     fun getFavoriteTv(): DataSource.Factory<Int, TvEntity> = mMoviesDao.getFavoriteTv()
 

@@ -3,16 +3,16 @@ package com.example.dicodingmovieapps.ui.home.movies
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.dicodingmovieapps.R
 import com.example.dicodingmovieapps.data.source.local.entity.MoviesEntity
 import com.example.dicodingmovieapps.data.source.local.entity.TvEntity
 import com.example.dicodingmovieapps.databinding.FragmentMoviesBinding
 import com.example.dicodingmovieapps.ui.detail.DetailActivity
+import com.example.dicodingmovieapps.utils.SortUtils
 import com.example.dicodingmovieapps.viewmodel.ViewModelFactory
 import com.example.dicodingmovieapps.vo.Status
 
@@ -31,8 +31,14 @@ class MoviesFragment : Fragment(), MoviesClickCallback {
             }
         }
     }
+
     private lateinit var moviesViewModel: MoviesViewModel
     private lateinit var binding: FragmentMoviesBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,8 +64,8 @@ class MoviesFragment : Fragment(), MoviesClickCallback {
 
     private fun getTabs() {
         when (arguments?.get(ARG_SECTION_NUMBER)) {
-            1 -> setDataMovies()
-            2 -> setDataTv()
+            1 -> setDataMovies(SortUtils.DEFAULT)
+            2 -> setDataTv(SortUtils.DEFAULT)
             else -> {
                 showError(true)
                 showLoading(false)
@@ -67,10 +73,10 @@ class MoviesFragment : Fragment(), MoviesClickCallback {
         }
     }
 
-    private fun setDataMovies() {
+    private fun setDataMovies(sortQuery: String) {
         Log.d("setDataMovies: ", arguments?.get(ARG_SECTION_NUMBER).toString())
         val moviesAdapter = MoviesAdapter(this@MoviesFragment)
-        moviesViewModel.getDataMovies((arguments?.get(ARG_SECTION_NUMBER) ?: 1) as Int)
+        moviesViewModel.getDataMovies((arguments?.get(ARG_SECTION_NUMBER) ?: 1) as Int, sortQuery)
             ?.observe(viewLifecycleOwner, { moviesData ->
                 if (moviesData != null) {
                     when (moviesData.status) {
@@ -97,10 +103,10 @@ class MoviesFragment : Fragment(), MoviesClickCallback {
         }
     }
 
-    private fun setDataTv() {
+    private fun setDataTv(sortQuery: String) {
         Log.d("setDataTv: ", arguments?.get(ARG_SECTION_NUMBER).toString())
         val tvAdapter = TvAdapter(this@MoviesFragment)
-        moviesViewModel.getDataTv((arguments?.get(ARG_SECTION_NUMBER) ?: 2) as Int)
+        moviesViewModel.getDataTv((arguments?.get(ARG_SECTION_NUMBER) ?: 2) as Int, sortQuery)
             ?.observe(viewLifecycleOwner, { tvData ->
                 if (tvData != null) {
                     when (tvData.status) {
@@ -161,5 +167,21 @@ class MoviesFragment : Fragment(), MoviesClickCallback {
         intent.putExtra(DetailActivity.EXTRA_TV, tv)
         intent.putExtra(DetailActivity.EXTRA_IS_TV, isTv)
         startActivity(intent)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        var sort = ""
+        when (item.itemId) {
+            R.id.action_default -> sort = SortUtils.DEFAULT
+            R.id.action_highest -> sort = SortUtils.HIGHEST
+            R.id.action_lowest -> sort = SortUtils.Lowest
+        }
+        if (arguments?.get(ARG_SECTION_NUMBER) == 1) {
+            setDataMovies(sort)
+        } else {
+            setDataTv(sort)
+        }
+        item.isChecked = true
+        return super.onOptionsItemSelected(item)
     }
 }

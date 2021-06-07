@@ -19,5 +19,8 @@ data class MoviesEntity(
     var posterThumbnail: String? = null,
 
     @ColumnInfo(name = "favorite")
-    var favorite: Boolean = false
+    var favorite: Boolean = false,
+
+    @ColumnInfo(name = "moviesScore")
+    var moviesScore: Int = 0
 ) : Parcelable

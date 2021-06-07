@@ -7,7 +7,7 @@ import com.example.dicodingmovieapps.vo.Resource
 
 interface MoviesDataSource {
 
-    fun getListMovies(): LiveData<Resource<PagedList<MoviesEntity>>>
+    fun getListMovies(query: String): LiveData<Resource<PagedList<MoviesEntity>>>
 
     fun getFavoriteMovies(): LiveData<PagedList<MoviesEntity>>
 
@@ -17,7 +17,7 @@ interface MoviesDataSource {
 
     fun setFavoriteMovies(movie: MoviesEntity, state: Boolean)
 
-    fun getListTv(): LiveData<Resource<PagedList<TvEntity>>>
+    fun getListTv(query: String): LiveData<Resource<PagedList<TvEntity>>>
 
     fun getFavoriteTv(): LiveData<PagedList<TvEntity>>
 

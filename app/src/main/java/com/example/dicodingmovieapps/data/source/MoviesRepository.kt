@@ -35,7 +35,7 @@ class MoviesRepository private constructor(
             }
     }
 
-    override fun getListMovies(): LiveData<Resource<PagedList<MoviesEntity>>> {
+    override fun getListMovies(query: String): LiveData<Resource<PagedList<MoviesEntity>>> {
         return object :
             NetworkBoundResource<PagedList<MoviesEntity>, List<ResultsItem>>(appExecutors) {
             public override fun loadFromDB(): LiveData<PagedList<MoviesEntity>> {
@@ -44,7 +44,10 @@ class MoviesRepository private constructor(
                     .setInitialLoadSizeHint(4)
                     .setPageSize(4)
                     .build()
-                return androidx.paging.LivePagedListBuilder(localDataSource.getAllMovies(), config)
+                return androidx.paging.LivePagedListBuilder(
+                    localDataSource.getAllMovies(query),
+                    config
+                )
                     .build()
             }
 
@@ -60,7 +63,8 @@ class MoviesRepository private constructor(
                     val movie = MoviesEntity(
                         response.id!!,
                         posterThumbnail = response.posterPath,
-                        favorite = false
+                        favorite = false,
+                        response.voteAverage?.toInt() ?: 0
                     )
                     moviesList.add(movie)
                 }
@@ -167,7 +171,7 @@ class MoviesRepository private constructor(
         appExecutors.diskIO().execute { localDataSource.setFavoriteMovies(movie, state) }
     }
 
-    override fun getListTv(): LiveData<Resource<PagedList<TvEntity>>> {
+    override fun getListTv(query: String): LiveData<Resource<PagedList<TvEntity>>> {
         return object :
             NetworkBoundResource<PagedList<TvEntity>, List<ResultsItem>>(appExecutors) {
             public override fun loadFromDB(): LiveData<PagedList<TvEntity>> {
@@ -176,7 +180,7 @@ class MoviesRepository private constructor(
                     .setInitialLoadSizeHint(4)
                     .setPageSize(4)
                     .build()
-                return androidx.paging.LivePagedListBuilder(localDataSource.getAllTv(), config)
+                return androidx.paging.LivePagedListBuilder(localDataSource.getAllTv(query), config)
                     .build()
             }
 
@@ -192,7 +196,8 @@ class MoviesRepository private constructor(
                     val tv = TvEntity(
                         response.id!!,
                         posterThumbnail = response.posterPath,
-                        favorite = false
+                        favorite = false,
+                        response.voteAverage?.toInt() ?: 0
                     )
                     tvList.add(tv)
                 }

@@ -19,5 +19,8 @@ data class TvEntity(
     var posterThumbnail: String? = null,
 
     @ColumnInfo(name = "favorite")
-    var favorite: Boolean = false
+    var favorite: Boolean = false,
+
+    @ColumnInfo(name = "tvScore")
+    var tvScore: Int = 0
 ) : Parcelable
